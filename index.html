@@ -266,43 +266,16 @@
       transform: translateY(0);
     }
 
-    /* ── Animated background blobs ── */
-    @keyframes bgFloat1 {
-      0%,100% { transform: translate(0,0) scale(1); }
-      33%      { transform: translate(60px,-80px) scale(1.08); }
-      66%      { transform: translate(-40px,50px) scale(0.95); }
-    }
-    @keyframes bgFloat2 {
-      0%,100% { transform: translate(0,0) scale(1); }
-      40%      { transform: translate(-70px,60px) scale(1.1); }
-      70%      { transform: translate(50px,-40px) scale(0.93); }
-    }
-    @keyframes bgFloat3 {
-      0%,100% { transform: translate(0,0) scale(1); }
-      50%      { transform: translate(80px,-60px) scale(1.06); }
-    }
-
     @media (prefers-reduced-motion: reduce) {
       .orb-1, .orb-2, .orb-3 { animation: none; }
       .glass-card:hover { transform: none; }
       .reveal { opacity: 1; transform: none; transition: none; }
-      [style*="bgFloat"] { animation: none !important; }
     }
   </style>
 </head>
 <body class="antialiased">
 
-  <!-- Animated background blobs -->
-  <div aria-hidden="true" style="position:fixed;inset:0;pointer-events:none;z-index:0;">
-    <div style="position:absolute;width:700px;height:700px;border-radius:50%;filter:blur(140px);opacity:0.14;background:radial-gradient(circle,#3B82F6,transparent 70%);top:-150px;left:-150px;animation:bgFloat1 14s ease-in-out infinite;"></div>
-    <div style="position:absolute;width:600px;height:600px;border-radius:50%;filter:blur(140px);opacity:0.12;background:radial-gradient(circle,#7C3AED,transparent 70%);top:25%;right:-100px;animation:bgFloat2 18s ease-in-out 3s infinite;"></div>
-    <div style="position:absolute;width:500px;height:500px;border-radius:50%;filter:blur(120px);opacity:0.11;background:radial-gradient(circle,#06B6D4,transparent 70%);bottom:15%;left:15%;animation:bgFloat3 12s ease-in-out 6s infinite;"></div>
-    <div style="position:absolute;width:450px;height:450px;border-radius:50%;filter:blur(120px);opacity:0.10;background:radial-gradient(circle,#8B5CF6,transparent 70%);top:55%;left:55%;animation:bgFloat1 16s ease-in-out 2s infinite;"></div>
-    <div style="position:absolute;width:380px;height:380px;border-radius:50%;filter:blur(110px);opacity:0.10;background:radial-gradient(circle,#2563EB,transparent 70%);bottom:25%;right:5%;animation:bgFloat2 20s ease-in-out 9s infinite;"></div>
-  </div>
-
-  <!-- All page content sits above blobs -->
-  <div style="position:relative;z-index:1;">
+  <div>
 
   <!-- ═══════════════════════════════════════ NAVBAR -->
   <header class="fixed top-4 left-4 right-4 z-50 max-w-6xl mx-auto">
@@ -310,14 +283,15 @@
 
       <a href="#hero" class="flex items-center gap-3">
         <img src="assets/logo.svg" alt="Bryle Briones QA logo" class="w-8 h-8 rounded-xl" />
-        <span class="font-heading font-semibold text-white text-sm">Bryle Briones</span>
+        <span class="font-heading font-semibold text-white text-sm whitespace-nowrap">Bryle Briones</span>
       </a>
 
-      <ul class="hidden md:flex items-center gap-7 text-sm font-medium text-zinc-400">
+      <ul class="hidden md:flex items-center gap-4 lg:gap-7 text-sm font-medium text-zinc-400">
         <li><a href="#about"          class="nav-link cursor-pointer">About</a></li>
         <li><a href="#experience"     class="nav-link cursor-pointer">Experience</a></li>
         <li><a href="#skills"         class="nav-link cursor-pointer">Skills</a></li>
-        <li><a href="#certifications" class="nav-link cursor-pointer">Certifications</a></li>
+        <li><a href="#certifications" class="nav-link cursor-pointer hidden lg:block">Certifications</a></li>
+        <li><a href="#certifications" class="nav-link cursor-pointer lg:hidden">Certs</a></li>
         <li><a href="#projects"       class="nav-link cursor-pointer">Projects</a></li>
         <li><a href="#contact"        class="nav-link cursor-pointer">Contact</a></li>
       </ul>
