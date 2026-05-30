@@ -141,14 +141,17 @@
     }
     .skill-tab.active .st-label { color: #fff; }
 
+    /* ── Skill logo in chip ── */
+    .skill-chip img { width:15px;height:15px;object-fit:contain;flex-shrink:0;border-radius:3px; }
+
     /* ── Skill chips in panel ── */
     @keyframes chip-in {
       from { opacity:0; transform: translateY(8px) scale(0.94); }
       to   { opacity:1; transform: translateY(0) scale(1); }
     }
     .skill-chip {
-      display: inline-flex; align-items: center;
-      padding: 6px 14px; border-radius: 99px;
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 13px 6px 9px; border-radius: 99px;
       font-size: 13px; font-weight: 500; cursor: default;
       background: rgb(var(--tc) / 0.10);
       border: 1px solid rgb(var(--tc) / 0.25);
@@ -1046,6 +1049,68 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
         tools: ['Claude Code','ChatGPT'] },
     ];
 
+    // Domain map for Google favicon service — works for any website
+    const LOGOS = {
+      // Test Automation
+      'Playwright':          'playwright.dev',
+      'Selenium':            'selenium.dev',
+      'Cypress':             'cypress.io',
+      'Robot Framework':     'robotframework.org',
+      'Katalon Studio':      'katalon.com',
+      'UILicious':           'uilicious.com',
+      'Maestro':             'maestro.dev',
+      // API & Performance
+      'Postman':             'postman.com',
+      'GraphQL':             'graphql.org',
+      'JMeter':              'jmeter.apache.org',
+      'BrowserStack':        'browserstack.com',
+      'LambdaTest':          'lambdatest.com',
+      'SoapUI':              'soapui.org',
+      // Languages
+      'TypeScript':          'typescriptlang.org',
+      'JavaScript':          'javascript.info',
+      'Java':                'java.com',
+      'Groovy':              'groovy-lang.org',
+      'Cucumber':            'cucumber.io',
+      'Gherkin':             'cucumber.io',
+      'Allure Report':       'allurereport.org',
+      // CI/CD
+      'Azure DevOps':        'azure.microsoft.com',
+      'Jenkins':             'jenkins.io',
+      'GitHub':              'github.com',
+      'Katalon TestOps':     'katalon.com',
+      // Test Management
+      'JIRA':                'atlassian.com',
+      'JIRA Zephyr':         'atlassian.com',
+      'JIRA Xray':           'atlassian.com',
+      'TestRail':            'testrail.com',
+      'HPALM':               'microfocus.com',
+      'BTS Mantis':          'mantisbt.org',
+      // Monitoring & SEO
+      'Kibana':              'elastic.co',
+      'Splunk':              'splunk.com',
+      'Google Lighthouse':   'developer.chrome.com',
+      'Google Tag Assistant':'support.google.com',
+      'Screaming Frog':      'screamingfrog.co.uk',
+      // CMS
+      'Django':              'djangoproject.com',
+      'Umbraco':             'umbraco.com',
+      'WordPress':           'wordpress.org',
+      // AI Tools
+      'Claude Code':         'anthropic.com',
+      'ChatGPT':             'openai.com',
+    };
+
+    const FAV = 'https://www.google.com/s2/favicons?sz=32&domain=';
+
+    function chipHtml(t, i) {
+      const domain = LOGOS[t];
+      const img = domain
+        ? `<img src="${FAV}${domain}" alt="" loading="lazy" width="14" height="14" onerror="this.style.display='none'">`
+        : '';
+      return `<span class="skill-chip" style="animation-delay:${i * 40}ms">${img}${t}</span>`;
+    }
+
     let currentIdx = 0;
     const tabsEl    = document.getElementById('skill-tabs');
     const panelEl   = document.getElementById('skill-panel');
@@ -1077,9 +1142,7 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
       displayEl.style.opacity = '0';
       displayEl.style.transform = 'translateY(6px)';
       setTimeout(() => {
-        displayEl.innerHTML = cat.tools.map((t, i) =>
-          `<span class="skill-chip" style="animation-delay:${i * 40}ms">${t}</span>`
-        ).join('');
+        displayEl.innerHTML = cat.tools.map((t, i) => chipHtml(t, i)).join('');
         displayEl.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
         displayEl.style.opacity = '1';
         displayEl.style.transform = 'translateY(0)';
