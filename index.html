@@ -121,7 +121,7 @@
     /* ── Skill tab grid ── */
     .skill-tab {
       display: flex; flex-direction: column; align-items: center;
-      gap: 8px; padding: 14px 6px;
+      gap: 8px; padding: 14px 8px;
       border-radius: 16px; cursor: pointer; text-align: center;
       background: rgba(255,255,255,0.04);
       border: 1px solid rgba(255,255,255,0.08);
@@ -152,6 +152,13 @@
       color: #71717A; transition: color 0.2s;
     }
     .skill-tab.active .st-label { color: #fff; }
+
+    @media (max-width: 639px) {
+      .skill-tab { padding: 10px 4px; gap: 6px; border-radius: 12px; }
+      .st-icon { width: 28px; height: 28px; border-radius: 8px; }
+      .st-icon svg { width: 14px; height: 14px; }
+      .st-label { font-size: 10px; }
+    }
 
     /* ── Skill logo in chip ── */
     .skill-chip img { width:15px;height:15px;object-fit:contain;flex-shrink:0;border-radius:3px; }
@@ -417,7 +424,7 @@
   </section>
 
   <!-- ═══════════════════════════════════════ ABOUT -->
-  <section id="about" class="relative py-24 px-6">
+  <section id="about" class="relative py-24 px-6 overflow-hidden">
     <div class="max-w-6xl mx-auto reveal">
 
       <div class="text-center mb-14">
@@ -494,7 +501,7 @@
   </section>
 
   <!-- ═══════════════════════════════════════ SKILLS -->
-  <section id="skills" class="relative py-24 px-6">
+  <section id="skills" class="relative py-24 px-6 overflow-hidden">
     <div class="orb orb-2 w-72 h-72 bg-violet-700/30 -right-16 top-8" aria-hidden="true"></div>
 
     <div class="max-w-5xl mx-auto reveal">
@@ -503,8 +510,8 @@
         <h2 class="font-heading text-3xl sm:text-4xl font-bold text-white">Tech Stack & Expertise</h2>
       </div>
 
-      <!-- Tab grid: 4 cols on md+, 2 cols on mobile -->
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mb-6" id="skill-tabs" role="tablist" aria-label="Skill categories">
+      <!-- Tab grid: 3 cols at all sizes -->
+      <div class="grid grid-cols-3 gap-2 sm:gap-2.5 mb-6" id="skill-tabs" role="tablist" aria-label="Skill categories">
 
         <button class="skill-tab" data-idx="0" role="tab" aria-selected="true">
           <div class="st-icon"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
@@ -513,7 +520,7 @@
 
         <button class="skill-tab" data-idx="1" role="tab">
           <div class="st-icon"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg></div>
-          <span class="st-label">API & Performance</span>
+          <span class="st-label">API Testing</span>
         </button>
 
         <button class="skill-tab" data-idx="2" role="tab">
@@ -522,26 +529,31 @@
         </button>
 
         <button class="skill-tab" data-idx="3" role="tab">
-          <div class="st-icon"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg></div>
-          <span class="st-label">CI/CD & Reporting</span>
+          <div class="st-icon"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg></div>
+          <span class="st-label">Performance & Browser</span>
         </button>
 
         <button class="skill-tab" data-idx="4" role="tab">
+          <div class="st-icon"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg></div>
+          <span class="st-label">CI/CD & Version Control</span>
+        </button>
+
+        <button class="skill-tab" data-idx="5" role="tab">
           <div class="st-icon"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg></div>
           <span class="st-label">Test Management</span>
         </button>
 
-        <button class="skill-tab" data-idx="5" role="tab">
+        <button class="skill-tab" data-idx="6" role="tab">
           <div class="st-icon"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg></div>
           <span class="st-label">Monitoring & SEO</span>
         </button>
 
-        <button class="skill-tab" data-idx="6" role="tab">
+        <button class="skill-tab" data-idx="7" role="tab">
           <div class="st-icon"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg></div>
           <span class="st-label">CMS</span>
         </button>
 
-        <button class="skill-tab" data-idx="7" role="tab">
+        <button class="skill-tab" data-idx="8" role="tab">
           <div class="st-icon"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h16a2 2 0 012 2v10a2 2 0 01-2 2h-2"/></svg></div>
           <span class="st-label">AI Tools</span>
         </button>
@@ -549,7 +561,7 @@
       </div>
 
       <!-- Skills panel -->
-      <div class="glass-card rounded-2xl p-7" id="skill-panel" style="min-height:148px;">
+      <div class="glass-card rounded-2xl p-5 sm:p-7" id="skill-panel" style="min-height:148px;">
         <div class="flex items-center justify-between mb-5">
           <div class="flex items-center gap-2.5">
             <div id="panel-dot" class="w-2 h-2 rounded-full flex-shrink-0"></div>
@@ -569,7 +581,7 @@
   </section>
 
   <!-- ═══════════════════════════════════════ EXPERIENCE -->
-  <section id="experience" class="relative py-24 px-6">
+  <section id="experience" class="relative py-24 px-6 overflow-hidden">
     <div class="orb orb-1 w-72 h-72 bg-blue-700/15 -left-20 top-0" aria-hidden="true"></div>
 
     <div class="max-w-3xl mx-auto reveal">
@@ -716,7 +728,7 @@
   </section>
 
     <!-- ═══════════════════════════════════════ CERTIFICATIONS -->
-  <section id="certifications" class="relative py-24 px-6">
+  <section id="certifications" class="relative py-24 px-6 overflow-hidden">
     <div class="orb orb-3 w-80 h-80 bg-blue-700/25 -left-24 bottom-0" aria-hidden="true"></div>
 
     <div class="max-w-6xl mx-auto reveal">
@@ -802,7 +814,7 @@
   </section>
 
   <!-- ═══════════════════════════════════════ PROJECTS -->
-  <section id="projects" class="relative py-24 px-6">
+  <section id="projects" class="relative py-24 px-6 overflow-hidden">
     <div class="orb orb-1 w-64 h-64 bg-cyan-600/20 right-1/3 top-0" aria-hidden="true"></div>
 
     <div class="max-w-6xl mx-auto reveal">
@@ -936,7 +948,7 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
   </section>
 
   <!-- ═══════════════════════════════════════ CONTACT -->
-  <section id="contact" class="relative py-24 px-6">
+  <section id="contact" class="relative py-24 px-6 overflow-hidden">
     <div class="orb orb-2 w-96 h-96 bg-blue-700/20  right-0  top-0"    aria-hidden="true"></div>
     <div class="orb orb-3 w-64 h-64 bg-violet-700/20 left-0 bottom-0" aria-hidden="true"></div>
 
@@ -1043,83 +1055,90 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
 
     // ── Tech Stack tabs ──────────────────────────────────────────────
     const SKILLS = [
-      { label: 'Test Automation',   tc: '59 130 246',
-        tools: ['Playwright','Selenium','Katalon Studio','Cypress','Robot Framework','UILicious','Maestro','Cucumber','Gherkin'] },
-      { label: 'API & Performance', tc: '16 185 129',
-        tools: ['Postman','GraphQL','SoapUI','JMeter','BrowserStack','LambdaTest'] },
-      { label: 'Languages',         tc: '139 92 246',
+      { label: 'Test Automation',         tc: '59 130 246',
+        tools: ['Playwright','Selenium','Katalon Studio','Robot Framework','Cypress','Cucumber (BDD)','Allure Report','Maestro','UIlicious'] },
+      { label: 'API Testing',             tc: '16 185 129',
+        tools: ['Postman','GraphQL','SoapUI'] },
+      { label: 'Languages',               tc: '139 92 246',
         tools: ['TypeScript','JavaScript','Java','Groovy'] },
-      { label: 'CI/CD & Reporting', tc: '6 182 212',
-        tools: ['Azure DevOps','Jenkins','Katalon TestOps','GitHub','Allure Report'] },
-      { label: 'Test Management',   tc: '245 158 11',
-        tools: ['JIRA','JIRA Zephyr','JIRA Xray','TestRail','HPALM','BTS Mantis'] },
-      { label: 'Monitoring & SEO',  tc: '244 63 94',
+      { label: 'Performance & Browser',   tc: '20 184 166',
+        tools: ['JMeter','Xcode Performance Tools','Network Emulator (Windows)','GameBench','BrowserStack','TestMu AI'] },
+      { label: 'CI/CD & Version Control', tc: '6 182 212',
+        tools: ['Azure DevOps','Jenkins','Katalon TestOps','GitHub'] },
+      { label: 'Test Management',         tc: '245 158 11',
+        tools: ['Jira','Jira Zephyr','Jira Xray','TestRail','HP ALM','MantisBT'] },
+      { label: 'Monitoring & SEO',        tc: '244 63 94',
         tools: ['Kibana','Splunk','Google Tag Assistant','Screaming Frog','Google Lighthouse'] },
-      { label: 'CMS',               tc: '249 115 22',
+      { label: 'CMS',                     tc: '249 115 22',
         tools: ['Django','Umbraco','WordPress'] },
-      { label: 'AI Tools',          tc: '168 85 247',
-        tools: ['Claude Code','ChatGPT','Gemini'] },
+      { label: 'AI Tools',                tc: '168 85 247',
+        tools: ['Claude Code','ChatGPT','Gemini','GitHub Copilot'] },
     ];
 
     // Domain map for Google favicon service — works for any website
     const LOGOS = {
       // Test Automation
-      'Playwright':          'playwright.dev',
-      'Selenium':            'selenium.dev',
-      'Cypress':             'cypress.io',
-      'Robot Framework':     'robotframework.org',
-      'Katalon Studio':      'katalon.com',
-      'UILicious':           'uilicious.com',
-      'Maestro':             'maestro.dev',
-      // API & Performance
-      'Postman':             'postman.com',
-      'GraphQL':             'graphql.org',
-      'JMeter':              'jmeter.apache.org',
-      'BrowserStack':        'browserstack.com',
-      'LambdaTest':          'lambdatest.com',
-      'SoapUI':              'soapui.org',
+      'Playwright':               'playwright.dev',
+      'Selenium':                 'selenium.dev',
+      'Katalon Studio':           'katalon.com',
+      'Robot Framework':          'robotframework.org',
+      'Cypress':                  'cypress.io',
+      'Cucumber (BDD)':           'cucumber.io',
+      'Allure Report':            'allurereport.org',
+      'Maestro':                  'maestro.dev',
+      'UIlicious':                'uilicious.com',
+      // API Testing
+      'Postman':                  'postman.com',
+      'GraphQL':                  'graphql.org',
+      'SoapUI':                   'soapui.org',
       // Languages
-      'TypeScript':          'typescriptlang.org',
-      'JavaScript':          'javascript.info',
-      'Java':                'java.com',
-      'Groovy':              'groovy-lang.org',
-      'Cucumber':            'cucumber.io',
-      'Gherkin':             'cucumber.io',
-      'Allure Report':       'allurereport.org',
-      // CI/CD
-      'Azure DevOps':        'azure.microsoft.com',
-      'Jenkins':             'jenkins.io',
-      'GitHub':              'github.com',
-      'Katalon TestOps':     'katalon.com',
+      'TypeScript':               'typescriptlang.org',
+      'JavaScript':               'javascript.info',
+      'Java':                     'java.com',
+      'Groovy':                   'groovy-lang.org',
+      // Performance & Browser
+      'JMeter':                   'jmeter.apache.org',
+      'Xcode Performance Tools':  'developer.apple.com',
+      'Network Emulator (Windows)': 'https://img.informer.com/icons/png/48/973/973508.png',
+      'GameBench':                'gamebench.net',
+      'BrowserStack':             'browserstack.com',
+      'TestMu AI':                'testmuai.com',
+      // CI/CD & Version Control
+      'Azure DevOps':             'azure.microsoft.com',
+      'Jenkins':                  'jenkins.io',
+      'Katalon TestOps':          'katalon.com',
+      'GitHub':                   'github.com',
       // Test Management
-      'JIRA':                'atlassian.com',
-      'JIRA Zephyr':         'atlassian.com',
-      'JIRA Xray':           'atlassian.com',
-      'TestRail':            'testrail.com',
-      'HPALM':               'microfocus.com',
-      'BTS Mantis':          'mantisbt.org',
+      'Jira':                     'atlassian.com',
+      'Jira Zephyr':              'atlassian.com',
+      'Jira Xray':                'getxray.app',
+      'TestRail':                 'testrail.com',
+      'HP ALM':                   'opentext.com',
+      'MantisBT':                 'mantisbt.org',
       // Monitoring & SEO
-      'Kibana':              'elastic.co',
-      'Splunk':              'splunk.com',
-      'Google Lighthouse':   'developer.chrome.com',
-      'Google Tag Assistant':'support.google.com',
-      'Screaming Frog':      'screamingfrog.co.uk',
+      'Kibana':                   'elastic.co',
+      'Splunk':                   'splunk.com',
+      'Google Tag Assistant':     'support.google.com',
+      'Screaming Frog':           'screamingfrog.co.uk',
+      'Google Lighthouse':        'developer.chrome.com',
       // CMS
-      'Django':              'djangoproject.com',
-      'Umbraco':             'umbraco.com',
-      'WordPress':           'wordpress.org',
+      'Django':                   'djangoproject.com',
+      'Umbraco':                  'umbraco.com',
+      'WordPress':                'wordpress.org',
       // AI Tools
-      'Claude Code':         'anthropic.com',
-      'ChatGPT':             'openai.com',
-      'Gemini':              'gemini.google.com',
+      'Claude Code':              'anthropic.com',
+      'ChatGPT':                  'openai.com',
+      'Gemini':                   'gemini.google.com',
+      'GitHub Copilot':           'github.com',
     };
 
     const FAV = 'https://www.google.com/s2/favicons?sz=32&domain=';
 
     function chipHtml(t, i) {
-      const domain = LOGOS[t];
-      const img = domain
-        ? `<img src="${FAV}${domain}" alt="" loading="lazy" width="14" height="14" onerror="this.style.display='none'">`
+      const val = LOGOS[t];
+      const src = val ? (val.startsWith('http') ? val : `${FAV}${val}`) : '';
+      const img = src
+        ? `<img src="${src}" alt="" loading="lazy" width="14" height="14" onerror="this.style.display='none'">`
         : '';
       return `<span class="skill-chip" style="animation-delay:${i * 40}ms">${img}${t}</span>`;
     }
