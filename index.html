@@ -31,7 +31,6 @@
     body {
       font-family: 'Space Grotesk', sans-serif;
       background: #09090B;
-      color: #F4F4F5;
       overflow-x: hidden;
     }
 
@@ -267,15 +266,43 @@
       transform: translateY(0);
     }
 
+    /* ── Animated background blobs ── */
+    @keyframes bgFloat1 {
+      0%,100% { transform: translate(0,0) scale(1); }
+      33%      { transform: translate(60px,-80px) scale(1.08); }
+      66%      { transform: translate(-40px,50px) scale(0.95); }
+    }
+    @keyframes bgFloat2 {
+      0%,100% { transform: translate(0,0) scale(1); }
+      40%      { transform: translate(-70px,60px) scale(1.1); }
+      70%      { transform: translate(50px,-40px) scale(0.93); }
+    }
+    @keyframes bgFloat3 {
+      0%,100% { transform: translate(0,0) scale(1); }
+      50%      { transform: translate(80px,-60px) scale(1.06); }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       .orb-1, .orb-2, .orb-3 { animation: none; }
       .glass-card:hover { transform: none; }
       .reveal { opacity: 1; transform: none; transition: none; }
+      [style*="bgFloat"] { animation: none !important; }
     }
   </style>
 </head>
-<body class="antialiased" style="isolation:isolate;">
-<canvas id="bg-canvas" aria-hidden="true" style="position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;opacity:0.8;"></canvas>
+<body class="antialiased">
+
+  <!-- Animated background blobs -->
+  <div aria-hidden="true" style="position:fixed;inset:0;pointer-events:none;z-index:0;">
+    <div style="position:absolute;width:700px;height:700px;border-radius:50%;filter:blur(140px);opacity:0.14;background:radial-gradient(circle,#3B82F6,transparent 70%);top:-150px;left:-150px;animation:bgFloat1 14s ease-in-out infinite;"></div>
+    <div style="position:absolute;width:600px;height:600px;border-radius:50%;filter:blur(140px);opacity:0.12;background:radial-gradient(circle,#7C3AED,transparent 70%);top:25%;right:-100px;animation:bgFloat2 18s ease-in-out 3s infinite;"></div>
+    <div style="position:absolute;width:500px;height:500px;border-radius:50%;filter:blur(120px);opacity:0.11;background:radial-gradient(circle,#06B6D4,transparent 70%);bottom:15%;left:15%;animation:bgFloat3 12s ease-in-out 6s infinite;"></div>
+    <div style="position:absolute;width:450px;height:450px;border-radius:50%;filter:blur(120px);opacity:0.10;background:radial-gradient(circle,#8B5CF6,transparent 70%);top:55%;left:55%;animation:bgFloat1 16s ease-in-out 2s infinite;"></div>
+    <div style="position:absolute;width:380px;height:380px;border-radius:50%;filter:blur(110px);opacity:0.10;background:radial-gradient(circle,#2563EB,transparent 70%);bottom:25%;right:5%;animation:bgFloat2 20s ease-in-out 9s infinite;"></div>
+  </div>
+
+  <!-- All page content sits above blobs -->
+  <div style="position:relative;z-index:1;">
 
   <!-- ═══════════════════════════════════════ NAVBAR -->
   <header class="fixed top-4 left-4 right-4 z-50 max-w-6xl mx-auto">
@@ -283,7 +310,7 @@
 
       <a href="#hero" class="flex items-center gap-3">
         <img src="assets/logo.svg" alt="Bryle Briones QA logo" class="w-8 h-8 rounded-xl" />
-        <span class="font-heading font-semibold text-white text-sm hidden sm:block">Bryle Briones</span>
+        <span class="font-heading font-semibold text-white text-sm">Bryle Briones</span>
       </a>
 
       <ul class="hidden md:flex items-center gap-7 text-sm font-medium text-zinc-400">
@@ -424,8 +451,8 @@
               <div class="text-xs text-zinc-500 mt-1">Yrs Exp.</div>
             </div>
             <div class="glass rounded-2xl p-4 text-center">
-              <div class="font-heading text-2xl font-bold text-white">5</div>
-              <div class="text-xs text-zinc-500 mt-1">Domains</div>
+              <div class="font-heading text-2xl font-bold text-white">6</div>
+              <div class="text-xs text-zinc-500 mt-1">Companies</div>
             </div>
             <div class="glass rounded-2xl p-4 text-center flex flex-col items-center justify-center">
               <div class="font-heading text-sm font-semibold leading-tight animate-learn">Always</div>
@@ -463,7 +490,7 @@
               </div>
               <a href="https://www.linkedin.com/in/bryle-briones-a24974167/" target="_blank" rel="noopener noreferrer"
                  class="hover:text-white transition-colors duration-200 cursor-pointer truncate">
-                linkedin.com/in/bryle-briones
+                Bryle Briones
               </a>
             </div>
           </div>
@@ -949,7 +976,7 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
           </div>
           <div>
             <div class="text-xs text-zinc-500 mb-1">LinkedIn</div>
-            <div class="text-sm text-white font-medium">bryle-briones</div>
+            <div class="text-sm text-white font-medium">Bryle Briones</div>
           </div>
         </a>
 
@@ -1019,82 +1046,6 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
     } else {
       document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
     }
-
-    // ── Particle background ──────────────────────────────────────────
-    (function () {
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-      const canvas = document.getElementById('bg-canvas');
-      const ctx    = canvas.getContext('2d');
-      const COLORS = ['96,165,250','139,92,246','34,211,238','167,139,250','99,102,241'];
-      const COUNT  = 55;
-      const LINK   = 130;   // max connection distance
-      let W, H, pts, raf;
-
-      function resize() {
-        W = canvas.width  = window.innerWidth;
-        H = canvas.height = window.innerHeight;
-      }
-
-      function Pt() {
-        this.x  = Math.random() * W;
-        this.y  = Math.random() * H;
-        this.vx = (Math.random() - 0.5) * 0.35;
-        this.vy = (Math.random() - 0.5) * 0.35;
-        this.r  = Math.random() * 1.2 + 0.4;
-        this.c  = COLORS[Math.floor(Math.random() * COLORS.length)];
-        this.a  = Math.random() * 0.35 + 0.08;
-      }
-
-      function tick() {
-        ctx.clearRect(0, 0, W, H);
-
-        for (let i = 0; i < pts.length; i++) {
-          const p = pts[i];
-          p.x += p.vx;
-          p.y += p.vy;
-          if (p.x < 0 || p.x > W) p.vx *= -1;
-          if (p.y < 0 || p.y > H) p.vy *= -1;
-
-          // dot
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-          ctx.fillStyle = 'rgba(' + p.c + ',' + p.a + ')';
-          ctx.fill();
-
-          // connections
-          for (let j = i + 1; j < pts.length; j++) {
-            const q  = pts[j];
-            const dx = p.x - q.x, dy = p.y - q.y;
-            const d  = Math.sqrt(dx * dx + dy * dy);
-            if (d < LINK) {
-              ctx.beginPath();
-              ctx.moveTo(p.x, p.y);
-              ctx.lineTo(q.x, q.y);
-              ctx.strokeStyle = 'rgba(' + p.c + ',' + ((1 - d / LINK) * 0.10) + ')';
-              ctx.lineWidth = 0.6;
-              ctx.stroke();
-            }
-          }
-        }
-        raf = requestAnimationFrame(tick);
-      }
-
-      resize();
-      pts = Array.from({ length: COUNT }, () => new Pt());
-      tick();
-
-      window.addEventListener('resize', () => {
-        resize();
-        pts.forEach(p => { p.x = Math.min(p.x, W); p.y = Math.min(p.y, H); });
-      });
-
-      // pause when tab hidden (save battery)
-      document.addEventListener('visibilitychange', () => {
-        if (document.hidden) { cancelAnimationFrame(raf); }
-        else { tick(); }
-      });
-    })();
 
     // ── Tech Stack tabs ──────────────────────────────────────────────
     const SKILLS = [
@@ -1315,5 +1266,7 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
     }
 
   </script>
+
+  </div><!-- /z-index wrapper -->
 </body>
 </html>
