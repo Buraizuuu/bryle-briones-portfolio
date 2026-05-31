@@ -1432,8 +1432,13 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
     window.addEventListener('load', function() { setTimeout(lockSkillPanelHeight, 50); });
 
     // Re-lock on viewport resize / orientation change
+    // Only trigger on width changes — mobile scroll causes height-only resize
+    // (address bar show/hide) which would otherwise flash all tab content.
     var _rsTimer;
+    var _lastRsWidth = window.innerWidth;
     window.addEventListener('resize', function() {
+      if (window.innerWidth === _lastRsWidth) return;
+      _lastRsWidth = window.innerWidth;
       clearTimeout(_rsTimer);
       _rsTimer = setTimeout(lockSkillPanelHeight, 150);
     });
