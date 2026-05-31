@@ -379,7 +379,10 @@
     <div class="relative z-10 text-center max-w-4xl mx-auto pt-28">
 
       <div class="inline-flex items-center gap-2 glass rounded-full px-4 py-2 text-sm text-zinc-400 mb-8">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" aria-hidden="true"></span>
+        <div class="relative flex h-2 w-2" aria-hidden="true">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+        </div>
         Available for opportunities
       </div>
 
@@ -638,7 +641,7 @@
                 <span class="text-[11px] font-mono font-bold shrink-0 hidden sm:inline" style="color:#60A5FA">2025</span>
                 <h3 class="font-heading font-bold text-white text-base leading-snug">Quality Assurance &amp; Support Analyst</h3>
               </div>
-              <span class="inline-flex items-center gap-1.5 text-[11px] text-zinc-600 font-mono whitespace-nowrap"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0" aria-hidden="true"></span><svg class="w-3 h-3 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>Jun 2025 &ndash; Present</span>
+              <span class="inline-flex items-center gap-1.5 text-[11px] text-zinc-600 font-mono whitespace-nowrap"><span class="relative flex h-1.5 w-1.5 shrink-0" aria-hidden="true"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span></span><svg class="w-3 h-3 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>Jun 2025 &ndash; Present</span>
             </div>
             <p class="text-sm font-medium mb-0.5" style="color:#60A5FA">UCG &middot; Universal Communications Group</p>
             <p class="text-xs text-zinc-600 mb-4">New Zealand &middot; Remote</p>
@@ -1496,7 +1499,7 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
             '<div class="flex flex-wrap gap-x-5 gap-y-1.5 text-xs text-zinc-500">' +
               '<span class="flex items-center gap-1.5">' + pinSvg + e.location + '</span>' +
               '<span class="flex items-center gap-1.5">' +
-                (e.current ? '<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0" aria-hidden="true"></span>' : calSvg) +
+                (e.current ? '<span class="relative flex h-1.5 w-1.5 shrink-0" aria-hidden="true"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span></span>' : calSvg) +
                 e.dates +
               '</span>' +
             '</div>' +
