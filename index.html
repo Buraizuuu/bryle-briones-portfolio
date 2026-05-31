@@ -1655,7 +1655,7 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
 
   <script>
     (function () {
-      var TTL = 86400000;
+      var TTL = 300000; // 5 min — matches server-side s-maxage
       document.querySelectorAll('[data-star-repo]').forEach(function (el) {
         var repo = el.getAttribute('data-star-repo');
         var countEl = el.querySelector('[data-star-count]');
