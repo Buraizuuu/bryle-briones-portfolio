@@ -296,6 +296,8 @@
 </head>
 <body class="antialiased">
 
+  <canvas id="particle-canvas" style="position:fixed;inset:0;z-index:0;pointer-events:none;" aria-hidden="true"></canvas>
+
   <!-- All page content -->
   <div style="position:relative;z-index:1;">
 
@@ -1371,6 +1373,62 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
     }
 
 
+  </script>
+
+  <script>
+    // Subtle floating particles
+    (function () {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var canvas = document.getElementById('particle-canvas');
+      var ctx = canvas.getContext('2d');
+      var W, H;
+      var COLORS = ['96,165,250', '167,139,250', '52,211,153', '34,211,238', '129,140,248'];
+      var N = 22;
+      var particles = [];
+
+      function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+
+      function mkParticle(randomY) {
+        return {
+          x: Math.random() * W,
+          y: randomY ? Math.random() * H : H + 6,
+          r: 0.7 + Math.random() * 1.6,
+          dx: (Math.random() - 0.5) * 0.18,
+          dy: -(0.18 + Math.random() * 0.28),
+          alpha: 0.07 + Math.random() * 0.18,
+          life: 0,
+          maxLife: 260 + Math.random() * 260,
+          color: COLORS[Math.floor(Math.random() * COLORS.length)]
+        };
+      }
+
+      function init() {
+        for (var i = 0; i < N; i++) particles.push(mkParticle(true));
+      }
+
+      function tick() {
+        ctx.clearRect(0, 0, W, H);
+        for (var i = 0; i < particles.length; i++) {
+          var p = particles[i];
+          p.life++;
+          p.x += p.dx;
+          p.y += p.dy;
+          var t = p.life / p.maxLife;
+          var fade = t < 0.15 ? t / 0.15 : t > 0.8 ? (1 - t) / 0.2 : 1;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(' + p.color + ',' + (p.alpha * fade).toFixed(3) + ')';
+          ctx.fill();
+          if (p.life >= p.maxLife || p.y < -8) particles[i] = mkParticle(false);
+        }
+        requestAnimationFrame(tick);
+      }
+
+      resize();
+      init();
+      tick();
+      window.addEventListener('resize', resize);
+    })();
   </script>
 
   </div><!-- /z-index wrapper -->
