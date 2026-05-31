@@ -1619,19 +1619,20 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
         var countEl = el.querySelector('[data-star-count]');
         if (!countEl) return;
         var key = 'gh-stars-' + repo;
-        try {
-          var cached = JSON.parse(localStorage.getItem(key));
-          if (cached && Date.now() - cached.ts < TTL) { countEl.textContent = cached.n; return; }
-        } catch (e) {}
+        var cached = null;
+        try { cached = JSON.parse(localStorage.getItem(key)); } catch (e) {}
+        if (cached && Date.now() - cached.ts < TTL) { countEl.textContent = cached.n; return; }
         fetch('https://api.github.com/repos/' + repo)
           .then(function (r) { return r.json(); })
           .then(function (d) {
             if (typeof d.stargazers_count === 'number') {
               countEl.textContent = d.stargazers_count;
               try { localStorage.setItem(key, JSON.stringify({ n: d.stargazers_count, ts: Date.now() })); } catch (e) {}
+            } else if (cached) {
+              countEl.textContent = cached.n;
             }
           })
-          .catch(function () {});
+          .catch(function () { if (cached) countEl.textContent = cached.n; });
       });
     })();
   </script>
