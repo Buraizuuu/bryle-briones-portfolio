@@ -16,6 +16,6 @@ export default async function handler(req, res) {
     return res.status(502).json({ error: 'upstream error' });
   }
 
-  res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400');
+  res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=86400');
   res.status(200).json({ stars: data.stargazers_count });
 }
