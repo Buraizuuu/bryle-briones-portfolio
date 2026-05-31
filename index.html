@@ -1621,13 +1621,13 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
         var key = 'gh-stars-' + repo;
         try {
           var cached = JSON.parse(localStorage.getItem(key));
-          if (cached && Date.now() - cached.ts < TTL) { countEl.textContent = cached.n; return; }
+          if (cached && Date.now() - cached.ts < TTL) { countEl.textContent = cached.n > 0 ? cached.n : '—'; return; }
         } catch (e) {}
         fetch('https://api.github.com/repos/' + repo)
           .then(function (r) { return r.json(); })
           .then(function (d) {
             if (typeof d.stargazers_count === 'number') {
-              countEl.textContent = d.stargazers_count;
+              countEl.textContent = d.stargazers_count > 0 ? d.stargazers_count : '—';
               try { localStorage.setItem(key, JSON.stringify({ n: d.stargazers_count, ts: Date.now() })); } catch (e) {}
             }
           })
