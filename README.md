@@ -2,7 +2,7 @@
 
 > **Built entirely with AI.** This portfolio was designed, written, and iterated using Claude (Anthropic) as the primary development tool — from UI/UX decisions and HTML/CSS architecture down to copy, accessibility checks, and deployment. It demonstrates what's possible when a QA engineer combines domain expertise with AI-assisted development.
 
-**Live site:** [https://bryle-briones-portfolio.vercel.app](https://bryle-briones.vercel.app/)
+**Live site:** [https://bryle-briones.vercel.app](https://bryle-briones.vercel.app/)
 
 ---
 
