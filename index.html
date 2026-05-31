@@ -1613,12 +1613,24 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
 
   <script>
     (function () {
+      var TTL = 3600000;
       document.querySelectorAll('[data-star-repo]').forEach(function (el) {
         var repo = el.getAttribute('data-star-repo');
         var countEl = el.querySelector('[data-star-count]');
+        if (!countEl) return;
+        var key = 'gh-stars-' + repo;
+        try {
+          var cached = JSON.parse(localStorage.getItem(key));
+          if (cached && Date.now() - cached.ts < TTL) { countEl.textContent = cached.n; return; }
+        } catch (e) {}
         fetch('https://api.github.com/repos/' + repo)
           .then(function (r) { return r.json(); })
-          .then(function (d) { if (countEl && typeof d.stargazers_count === 'number') countEl.textContent = d.stargazers_count; })
+          .then(function (d) {
+            if (typeof d.stargazers_count === 'number') {
+              countEl.textContent = d.stargazers_count;
+              try { localStorage.setItem(key, JSON.stringify({ n: d.stargazers_count, ts: Date.now() })); } catch (e) {}
+            }
+          })
           .catch(function () {});
       });
     })();
