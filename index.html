@@ -380,9 +380,58 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .orb-1, .orb-2, .orb-3, .logo-spin-ring { animation: none; }
+      .orb-1, .orb-2, .orb-3, .logo-spin-ring, .animate-learn { animation: none; }
       .glass-card:hover { transform: none; }
       .reveal { opacity: 1; transform: none; transition: none; }
+    }
+
+    /* ── Mobile performance ─────────────────────────────────────────────
+       backdrop-filter:blur re-composites all layers on every scroll frame.
+       With 20+ glass elements on screen this is the primary jank cause.
+    ─────────────────────────────────────────────────────────────────── */
+    @media (max-width: 767px) {
+      /* Replace blur with opaque dark backgrounds */
+      .glass {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        background: rgba(13, 13, 16, 0.95);
+      }
+      .glass-card {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        background: rgba(13, 13, 16, 0.90);
+      }
+      #back-to-top {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+      }
+
+      /* Hide orbs — filter:blur(90px) + animation forces GPU overdraw */
+      .orb { display: none !important; }
+
+      /* Remove fixed ambient gradient — extra compositing layer */
+      body::before { display: none; }
+
+      /* Stop decorative spin & pulse — no value while scrolling */
+      .logo-spin-ring { animation: none; background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%); }
+      .animate-learn  { animation: none; color: #D4D4D8; }
+
+      /* No hover on touch — saves transition overhead */
+      .glass-card:hover {
+        transform: none;
+        box-shadow: none;
+        background: rgba(13, 13, 16, 0.90);
+        border-color: rgba(255,255,255,0.1);
+      }
+      .profile-avatar:hover { transform: none; }
+      .skill-chip:hover     { transform: none; }
+      .exp-tab:hover:not(.active) { transform: none; }
+      .skill-tab:hover:not(.active) {
+        background: rgba(255,255,255,0.04);
+        border-color: rgba(255,255,255,0.08);
+      }
+      .cert-card:hover .cert-glow { opacity: 0; }
+      #back-to-top:hover { transform: none; }
     }
 
     /* Back-to-top button */
@@ -564,6 +613,8 @@
                  alt="Bryle Briones portrait"
                  class="profile-avatar relative w-64 h-64 rounded-3xl block object-cover object-top"
                  style="z-index:1;"
+                 width="256" height="256"
+                 fetchpriority="high" decoding="async"
                  draggable="false" ondragstart="return false;" oncontextmenu="return false;" />
             <div class="absolute -bottom-3 -right-3 glass rounded-2xl px-3 py-2 flex items-center gap-2" style="z-index:2;">
               <svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.14 2 5 5.14 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.86-3.14-7-7-7zm0 9.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z"/></svg>
@@ -1710,11 +1761,13 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
     // Subtle floating particles
     (function () {
       var canvas = document.getElementById('particle-canvas');
+      var isMobile = window.innerWidth < 768;
       var ctx = canvas.getContext('2d');
       var W, H;
       var COLORS = ['96,165,250', '167,139,250', '52,211,153', '34,211,238', '129,140,248'];
-      var N = 22;
+      var N = isMobile ? 8 : 22;
       var particles = [];
+      var rafId = null;
 
       function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
 
@@ -1751,12 +1804,21 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
           ctx.fill();
           if (p.life >= p.maxLife || p.y < -8) particles[i] = mkParticle(false);
         }
-        requestAnimationFrame(tick);
+        rafId = requestAnimationFrame(tick);
       }
+
+      document.addEventListener('visibilitychange', function () {
+        if (document.hidden) {
+          cancelAnimationFrame(rafId);
+          rafId = null;
+        } else if (!rafId) {
+          rafId = requestAnimationFrame(tick);
+        }
+      });
 
       resize();
       init();
-      tick();
+      rafId = requestAnimationFrame(tick);
       window.addEventListener('resize', resize);
     })();
   </script>
