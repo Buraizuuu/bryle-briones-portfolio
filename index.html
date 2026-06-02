@@ -1351,12 +1351,16 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
     menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('open'));
     document.querySelectorAll('.mobile-link').forEach(l => l.addEventListener('click', () => mobileMenu.classList.remove('open')));
 
-    // Smooth scroll
+    // Smooth scroll — offset for fixed header
+    const siteHeader = document.querySelector('header');
     document.querySelectorAll('a[href^="#"]').forEach(a => {
       a.addEventListener('click', e => {
         e.preventDefault();
         const t = document.querySelector(a.getAttribute('href'));
-        if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        if (!t) return;
+        const headerBottom = siteHeader ? siteHeader.getBoundingClientRect().bottom : 0;
+        const top = t.getBoundingClientRect().top + window.scrollY - headerBottom - 16;
+        window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
       });
     });
 
