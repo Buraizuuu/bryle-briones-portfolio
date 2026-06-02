@@ -362,6 +362,11 @@
     #mobile-menu { display: none; }
     #mobile-menu.open { display: block; }
 
+    /* Prevent double-tap zoom on interactive elements */
+    a, button, [role="button"], input, select, textarea, label {
+      touch-action: manipulation;
+    }
+
     .reveal {
       opacity: 0;
       transform: translateY(28px);
