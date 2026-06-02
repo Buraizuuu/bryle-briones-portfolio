@@ -409,9 +409,6 @@
       /* Hide orbs — filter:blur(90px) + animation forces GPU overdraw */
       .orb { display: none !important; }
 
-      /* Remove fixed ambient gradient — extra compositing layer */
-      body::before { display: none; }
-
       /* Stop decorative spin & pulse — no value while scrolling */
       .logo-spin-ring { animation: none; background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%); }
       .animate-learn  { animation: none; color: #D4D4D8; }
