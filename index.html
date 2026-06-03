@@ -2197,9 +2197,13 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
         if (!t.active) return;
         var dx      = e.touches[0].clientX - t.startX;
         if (Math.abs(dx) > 5) t.moved = true;
+        var W       = cards[0].offsetWidth;
         var atStart = current === 0         && dx > 0;
         var atEnd   = current === TOTAL - 1 && dx < 0;
-        curX = t.startCurX + (atStart || atEnd ? rubberBand(dx) : dx);
+        /* resist dragging beyond ±1 card so swipe feels like a discrete slide */
+        var overFwd = !atStart && dx >  (W + GAP);
+        var overBck = !atEnd   && dx < -(W + GAP);
+        curX = t.startCurX + (atStart || atEnd || overFwd || overBck ? rubberBand(dx) : dx);
         track.style.transform = 'translateX(' + curX + 'px)';
       }, { passive: true });
 
@@ -2226,14 +2230,14 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
         m.startX    = e.clientX;
         m.startCurX = curX;
         m.moved     = false;
-        track.classList.add('no-transition', 'is-dragging');
+        track.classList.add('no-transition');
         pauseAuto();
         e.preventDefault();
       });
       document.addEventListener('mousemove', function(e){
         if (!m.down) return;
         var dx    = e.clientX - m.startX;
-        if (Math.abs(dx) > 4){ m.moved = true; recentDrag = true; }
+        if (Math.abs(dx) > 4){ m.moved = true; recentDrag = true; track.classList.add('is-dragging'); }
         var atStart = current === 0         && dx > 0;
         var atEnd   = current === TOTAL - 1 && dx < 0;
         curX = m.startCurX + (atStart || atEnd ? rubberBand(dx) : dx);
