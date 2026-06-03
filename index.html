@@ -2208,9 +2208,18 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
       document.addEventListener('mouseup',    endMouse);
       document.addEventListener('mouseleave', endMouse);
 
+      /* ── Equal card heights ─────────────────────────────────────── */
+      function equalizeCards(){
+        cards.forEach(function(c){ c.style.minHeight = ''; });
+        var maxH = 0;
+        cards.forEach(function(c){ maxH = Math.max(maxH, c.offsetHeight); });
+        cards.forEach(function(c){ c.style.minHeight = maxH + 'px'; });
+      }
+
       /* ── Recalculate on resize ───────────────────────────────────── */
       window.addEventListener('resize', function(){
         moveTo(targetX(current), true);
+        equalizeCards();
       });
 
       /* ── Visibility-gated auto-play ──────────────────────────────── */
@@ -2228,6 +2237,7 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
       /* ── Init ────────────────────────────────────────────────────── */
       moveTo(targetX(0), true);
       updateActive(0);
+      equalizeCards();
     })();
   </script>
 </body>
