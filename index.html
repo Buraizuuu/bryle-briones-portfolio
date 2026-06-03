@@ -1379,6 +1379,17 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
           <svg class="w-8 h-8 text-blue-500/60 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
           <div class="flex-1 flex flex-col gap-2">
             <p class="rec-text text-zinc-300 text-sm leading-relaxed">
+              I had the pleasure of working with Bryle and was consistently impressed by the quality of his work and his commitment to delivering excellent results. Bryle is an outstanding QA professional with a keen eye for detail and a thorough approach to testing. He has a natural ability to identify issues that others might overlook, helping to ensure high-quality releases and a seamless user experience. Beyond his technical skills, Bryle is proactive, reliable, and always willing to collaborate with developers, product teams, and stakeholders to resolve issues efficiently. What particularly stood out was his dedication to quality and his ability to balance attention to detail with the demands of fast-paced delivery environments. He consistently brought a positive attitude, strong communication skills, and a solutions-focused mindset to every project. I would highly recommend Bryle to any organisation looking for a skilled, dependable, and highly effective QA professional. He would be a valuable asset to any team.
+            </p>
+            <button class="rec-toggle hidden text-blue-400 hover:text-blue-300 text-xs font-medium self-start transition-colors duration-150 cursor-pointer focus-visible:outline-none focus-visible:underline" aria-expanded="false">Read more</button>
+          </div>
+          <p class="text-zinc-500 text-xs font-medium pt-2 border-t border-white/10">E.F. &middot; Senior Agile Delivery Manager</p>
+        </article>
+
+        <article class="rec-card glass-card rounded-2xl p-6 flex flex-col gap-4 flex-shrink-0 w-[84vw] md:w-[530px]">
+          <svg class="w-8 h-8 text-blue-500/60 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+          <div class="flex-1 flex flex-col gap-2">
+            <p class="rec-text text-zinc-300 text-sm leading-relaxed">
               Although I did not report directly to Bryle, he consistently demonstrated senior-level leadership through his expertise, mentorship, and commitment to continuous improvement. He was always willing to share his knowledge, provide guidance, and help the team identify more efficient ways of working. His focus on improving testing practices, streamlining processes, and promoting quality standards had a positive impact across the team. Bryle was a trusted resource who approached challenges with a practical mindset and a collaborative attitude. He would be a valuable asset to any organization seeking a technical leader who drives both quality and process excellence.
             </p>
             <button class="rec-toggle hidden text-blue-400 hover:text-blue-300 text-xs font-medium self-start transition-colors duration-150 cursor-pointer focus-visible:outline-none focus-visible:underline" aria-expanded="false">Read more</button>
@@ -1404,6 +1415,7 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
         <span role="button" tabindex="0" data-rec-idx="1" class="rec-dot block h-2 rounded-full bg-zinc-600 transition-all duration-300 w-2 cursor-pointer" aria-label="Recommendation 2"></span>
         <span role="button" tabindex="0" data-rec-idx="2" class="rec-dot block h-2 rounded-full bg-zinc-600 transition-all duration-300 w-2 cursor-pointer" aria-label="Recommendation 3"></span>
         <span role="button" tabindex="0" data-rec-idx="3" class="rec-dot block h-2 rounded-full bg-zinc-600 transition-all duration-300 w-2 cursor-pointer" aria-label="Recommendation 4"></span>
+        <span role="button" tabindex="0" data-rec-idx="4" class="rec-dot block h-2 rounded-full bg-zinc-600 transition-all duration-300 w-2 cursor-pointer" aria-label="Recommendation 5"></span>
       </div>
     </div>
   </section>
@@ -2039,7 +2051,8 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
       var curX       = 0;
       var timer      = null;
       var isVisible  = false;
-      var recentDrag = false; /* true briefly after a mouse drag to block the trailing click */
+      var recentDrag   = false; /* true briefly after a mouse drag to block the trailing click */
+      var restartTimer = null;  /* setTimeout handle for auto-play restart */
 
       /* Compute the translateX that centers card[idx] in the wrap */
       function targetX(idx){
@@ -2105,12 +2118,33 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
         updateActive(idx);
       }
 
+      /* Clamp navigation for swipe/drag — no wrap-around at boundaries */
+      function swipeTo(idx){
+        idx = Math.max(0, Math.min(TOTAL - 1, idx));
+        moveTo(targetX(idx), false);
+        updateActive(idx);
+      }
+
       function startAuto(){
         if (timer || !isVisible) return;
         timer = setInterval(function(){ goTo(current + 1); }, INTERVAL);
       }
       function stopAuto(){ clearInterval(timer); timer = null; }
-      function bounce(fn){ stopAuto(); fn(); setTimeout(startAuto, 4000); }
+
+      /* Schedule a fresh auto-play restart, cancelling any pending one */
+      function scheduleRestart(delay){
+        clearTimeout(restartTimer);
+        restartTimer = setTimeout(startAuto, delay != null ? delay : 4000);
+      }
+
+      /* Stop auto AND cancel any pending restart — call on interaction start */
+      function pauseAuto(){
+        stopAuto();
+        clearTimeout(restartTimer);
+        restartTimer = null;
+      }
+
+      function bounce(fn){ pauseAuto(); fn(); scheduleRestart(4000); }
 
       /* ── Card clicks ─────────────────────────────────────────────── */
       cards.forEach(function(c, i){
@@ -2146,48 +2180,60 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
       });
 
       /* ── Touch drag (mobile / tablet) ────────────────────────────── */
-      var t = { startX: 0, startCurX: 0, moved: false };
+      var t = { startX: 0, startCurX: 0, moved: false, active: false };
       wrap.addEventListener('touchstart', function(e){
-        stopAuto();
-        t.startX   = e.touches[0].clientX;
+        if (!e.target.closest('.rec-card')){ t.active = false; return; }
+        t.active    = true;
+        pauseAuto();
+        t.startX    = e.touches[0].clientX;
         t.startCurX = curX;
-        t.moved    = false;
+        t.moved     = false;
         track.classList.add('no-transition');
       }, { passive: true });
       wrap.addEventListener('touchmove', function(e){
+        if (!t.active) return;
         var dx = e.touches[0].clientX - t.startX;
         if (Math.abs(dx) > 5) t.moved = true;
-        curX = t.startCurX + dx;
+        /* rubber band resistance at first/last card boundaries */
+        var eff = (current === 0 && dx > 0) || (current === TOTAL - 1 && dx < 0)
+          ? dx * 0.25 : dx;
+        curX = t.startCurX + eff;
         track.style.transform = 'translateX(' + curX + 'px)';
       }, { passive: true });
       wrap.addEventListener('touchend', function(e){
+        if (!t.active) return;
+        t.active = false;
         track.classList.remove('no-transition');
         var dx = e.changedTouches[0].clientX - t.startX;
         var W  = cards[0].offsetWidth;
         if (t.moved && Math.abs(dx) > W * 0.2){
-          goTo(dx < 0 ? current + 1 : current - 1);
+          swipeTo(dx < 0 ? current + 1 : current - 1);
         } else {
-          goTo(current); /* snap back */
+          swipeTo(current); /* snap back */
         }
-        setTimeout(startAuto, 800);
+        scheduleRestart(4000);
       }, { passive: true });
 
       /* ── Mouse drag (desktop) ────────────────────────────────────── */
       var m = { down: false, startX: 0, startCurX: 0, moved: false };
       track.addEventListener('mousedown', function(e){
-        m.down     = true;
-        m.startX   = e.clientX;
+        if (!e.target.closest('.rec-card')) return;
+        m.down      = true;
+        m.startX    = e.clientX;
         m.startCurX = curX;
-        m.moved    = false;
+        m.moved     = false;
         track.classList.add('no-transition', 'is-dragging');
-        stopAuto();
+        pauseAuto();
         e.preventDefault();
       });
       document.addEventListener('mousemove', function(e){
         if (!m.down) return;
         var dx = e.clientX - m.startX;
         if (Math.abs(dx) > 4){ m.moved = true; recentDrag = true; }
-        curX = m.startCurX + dx;
+        /* rubber band resistance at first/last card boundaries */
+        var eff = (current === 0 && dx > 0) || (current === TOTAL - 1 && dx < 0)
+          ? dx * 0.25 : dx;
+        curX = m.startCurX + eff;
         track.style.transform = 'translateX(' + curX + 'px)';
       });
       function endMouse(e){
@@ -2197,13 +2243,13 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
         var dx = e.clientX - m.startX;
         var W  = cards[0].offsetWidth;
         if (m.moved && Math.abs(dx) > W * 0.15){
-          goTo(dx < 0 ? current + 1 : current - 1);
+          swipeTo(dx < 0 ? current + 1 : current - 1);
         } else {
-          goTo(current);
+          swipeTo(current);
         }
         /* clear recentDrag after the click event has had a chance to fire */
         setTimeout(function(){ recentDrag = false; }, 100);
-        setTimeout(startAuto, 800);
+        scheduleRestart(4000);
       }
       document.addEventListener('mouseup',    endMouse);
       document.addEventListener('mouseleave', endMouse);
