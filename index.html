@@ -351,6 +351,38 @@
     .cert-card:hover .cert-glow { opacity: 1; }
 
     html { scrollbar-color: #3B82F6 #09090B; scrollbar-width: thin; }
+    .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+    .scrollbar-none::-webkit-scrollbar { display: none; }
+    .rec-text.is-clamped { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 6; line-clamp: 6; overflow: hidden; }
+
+    /* Recommendations spotlight carousel — transform-based, no scroll-snap */
+    #rec-wrap  { overflow: hidden; }
+    #rec-track {
+      padding-block: 2.5rem;
+      will-change: transform;
+      transition: transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      cursor: grab;
+      user-select: none;
+    }
+    #rec-track.is-dragging,
+    #rec-track.is-dragging .rec-card { cursor: grabbing !important; }
+    #rec-track.no-transition { transition: none !important; }
+    .rec-card {
+      transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94), opacity 0.5s ease,
+                  border-color 0.5s ease, box-shadow 0.5s ease;
+      opacity: 0.4;
+      transform: scale(0.86);
+      cursor: pointer;
+    }
+    .rec-card.active {
+      opacity: 1;
+      transform: scale(1);
+      cursor: default;
+      border-color: rgba(96,165,250,0.4);
+      box-shadow: 0 8px 36px rgba(37,99,235,0.28);
+    }
+    .rec-card.glass-card:hover        { transform: scale(0.88); background: rgba(255,255,255,0.07); }
+    .rec-card.active.glass-card:hover { transform: scale(1); }
     ::-webkit-scrollbar { width: 5px; }
     ::-webkit-scrollbar-track { background: #09090B; }
     ::-webkit-scrollbar-thumb {
@@ -480,8 +512,9 @@
         <li><a href="#skills"         class="nav-link cursor-pointer">Skills</a></li>
         <li><a href="#experience"     class="nav-link cursor-pointer">Experience</a></li>
         <li><a href="#certifications" class="nav-link cursor-pointer"><span class="hidden lg:inline">Certifications</span><span class="lg:hidden">Certs</span></a></li>
-        <li><a href="#projects"       class="nav-link cursor-pointer">Projects</a></li>
-        <li><a href="#contact"        class="nav-link cursor-pointer">Contact</a></li>
+        <li><a href="#projects"         class="nav-link cursor-pointer">Projects</a></li>
+        <li><a href="#recommendations" class="nav-link cursor-pointer"><span class="hidden lg:inline">Recommendations</span><span class="lg:hidden">Recs</span></a></li>
+        <li><a href="#contact"         class="nav-link cursor-pointer">Contact</a></li>
       </ul>
 
       <div class="flex items-center gap-2">
@@ -502,8 +535,9 @@
         <li><a href="#skills"         class="mobile-link nav-link">Skills</a></li>
         <li><a href="#experience"     class="mobile-link nav-link">Experience</a></li>
         <li><a href="#certifications" class="mobile-link nav-link">Certifications</a></li>
-        <li><a href="#projects"       class="mobile-link nav-link">Projects</a></li>
-        <li><a href="#contact"        class="mobile-link nav-link">Contact</a></li>
+        <li><a href="#projects"         class="mobile-link nav-link">Projects</a></li>
+        <li><a href="#recommendations" class="mobile-link nav-link">Recommendations</a></li>
+        <li><a href="#contact"         class="mobile-link nav-link">Contact</a></li>
         <li>
           <a href="assets/Bryle_Profile.pdf" download
              class="inline-flex items-center gap-2 bg-blue-600 text-white text-sm px-4 py-2 rounded-xl cursor-pointer">
@@ -1303,6 +1337,77 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
     </div>
   </section>
 
+  <!-- ═══════════════════════════════════════ RECOMMENDATIONS -->
+  <section id="recommendations" class="relative py-14 md:py-20 lg:py-24">
+    <div class="orb orb-3 w-96 h-96 bg-indigo-700/20 left-0  top-0"    aria-hidden="true"></div>
+    <div class="orb orb-2 w-64 h-64 bg-blue-700/15  right-0 bottom-0" aria-hidden="true"></div>
+
+    <div class="px-6 text-center mb-12 reveal">
+      <p class="text-blue-400 text-xs font-semibold uppercase tracking-widest mb-3">Recommendations</p>
+      <h2 class="font-heading text-3xl sm:text-4xl font-bold text-white leading-tight">
+        What Colleagues<br/>
+        <span class="gradient-text">Are Saying</span>
+      </h2>
+    </div>
+
+    <div class="relative" id="rec-wrap">
+      <div id="rec-track" class="flex gap-6">
+
+        <article class="rec-card glass-card rounded-2xl p-6 flex flex-col gap-4 flex-shrink-0 w-[84vw] md:w-[530px]">
+          <svg class="w-8 h-8 text-blue-500/60 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+          <div class="flex-1 flex flex-col gap-2">
+            <p class="rec-text text-zinc-300 text-sm leading-relaxed">
+              Although I did not report directly to Bryle, he consistently demonstrated senior-level leadership through his expertise, mentorship, and commitment to continuous improvement. He was always willing to share his knowledge, provide guidance, and help the team identify more efficient ways of working. His focus on improving testing practices, streamlining processes, and promoting quality standards had a positive impact across the team. Bryle was a trusted resource who approached challenges with a practical mindset and a collaborative attitude. He would be a valuable asset to any organization seeking a technical leader who drives both quality and process excellence.
+            </p>
+            <button class="rec-toggle hidden text-blue-400 hover:text-blue-300 text-xs font-medium self-start transition-colors duration-150 cursor-pointer focus-visible:outline-none focus-visible:underline" aria-expanded="false">Read more</button>
+          </div>
+          <p class="text-zinc-500 text-xs font-medium pt-2 border-t border-white/10">A.J.R. &middot; IT/QA Manual Tester</p>
+        </article>
+
+        <article class="rec-card glass-card rounded-2xl p-6 flex flex-col gap-4 flex-shrink-0 w-[84vw] md:w-[530px]">
+          <svg class="w-8 h-8 text-blue-500/60 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+          <div class="flex-1 flex flex-col gap-2">
+            <p class="rec-text text-zinc-300 text-sm leading-relaxed">
+              I had the pleasure of working with Bryle on the same team and can confidently say he is a dependable and highly skilled QA professional. He consistently approaches challenges with a positive attitude and a strong commitment to quality. Bryle is always willing to support his teammates, share his knowledge, and help drive projects forward. His professionalism, collaborative mindset, and dedication to delivering high-quality results make him a valuable asset to any team.
+            </p>
+            <button class="rec-toggle hidden text-blue-400 hover:text-blue-300 text-xs font-medium self-start transition-colors duration-150 cursor-pointer focus-visible:outline-none focus-visible:underline" aria-expanded="false">Read more</button>
+          </div>
+          <p class="text-zinc-500 text-xs font-medium pt-2 border-t border-white/10">M.E. &middot; Sr. Quality Engineer / SDET</p>
+        </article>
+
+        <article class="rec-card glass-card rounded-2xl p-6 flex flex-col gap-4 flex-shrink-0 w-[84vw] md:w-[530px]">
+          <svg class="w-8 h-8 text-blue-500/60 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+          <div class="flex-1 flex flex-col gap-2">
+            <p class="rec-text text-zinc-300 text-sm leading-relaxed">
+              I've worked with Bryle for a couple years. He is really thorough in his work ensuring work is done the right way. From a more "social" point of view to avoid talking just about work related stuff. He is quite fun to have a chat with!
+            </p>
+            <button class="rec-toggle hidden text-blue-400 hover:text-blue-300 text-xs font-medium self-start transition-colors duration-150 cursor-pointer focus-visible:outline-none focus-visible:underline" aria-expanded="false">Read more</button>
+          </div>
+          <p class="text-zinc-500 text-xs font-medium pt-2 border-t border-white/10">N.G. &middot; .NET Developer</p>
+        </article>
+
+        <article class="rec-card glass-card rounded-2xl p-6 flex flex-col gap-4 flex-shrink-0 w-[84vw] md:w-[530px]">
+          <svg class="w-8 h-8 text-blue-500/60 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+          <div class="flex-1 flex flex-col gap-2">
+            <p class="rec-text text-zinc-300 text-sm leading-relaxed">
+              Recognized for strong technical expertise, independent problem solving, reliability, and professionalism. Consistently delivers quality work with minimal supervision while maintaining a dependable and collaborative approach within the team.
+            </p>
+            <button class="rec-toggle hidden text-blue-400 hover:text-blue-300 text-xs font-medium self-start transition-colors duration-150 cursor-pointer focus-visible:outline-none focus-visible:underline" aria-expanded="false">Read more</button>
+          </div>
+          <p class="text-zinc-500 text-xs font-medium pt-2 border-t border-white/10">J.J. &middot; Software Operations Manager</p>
+        </article>
+
+      </div>
+
+      <div class="flex justify-center gap-3 mt-6" role="group" aria-label="Recommendation navigation">
+        <span role="button" tabindex="0" data-rec-idx="0" class="rec-dot block h-2 rounded-full bg-blue-500 transition-all duration-300 w-5 cursor-pointer" aria-label="Recommendation 1"></span>
+        <span role="button" tabindex="0" data-rec-idx="1" class="rec-dot block h-2 rounded-full bg-zinc-600 transition-all duration-300 w-2 cursor-pointer" aria-label="Recommendation 2"></span>
+        <span role="button" tabindex="0" data-rec-idx="2" class="rec-dot block h-2 rounded-full bg-zinc-600 transition-all duration-300 w-2 cursor-pointer" aria-label="Recommendation 3"></span>
+        <span role="button" tabindex="0" data-rec-idx="3" class="rec-dot block h-2 rounded-full bg-zinc-600 transition-all duration-300 w-2 cursor-pointer" aria-label="Recommendation 4"></span>
+      </div>
+    </div>
+  </section>
+
   <!-- ═══════════════════════════════════════ CONTACT -->
   <section id="contact" class="relative py-14 md:py-20 lg:py-24 px-6">
     <div class="orb orb-2 w-96 h-96 bg-blue-700/20  right-0  top-0"    aria-hidden="true"></div>
@@ -1855,7 +1960,7 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
   <script>
     // ── Active nav link on scroll ──────────────────────────────────────
     (function () {
-      var SECTION_IDS = ['about','skills','experience','certifications','projects','contact'];
+      var SECTION_IDS = ['about','skills','experience','certifications','projects','recommendations','contact'];
       var navObserver = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
           document.querySelectorAll('a[href="#' + entry.target.id + '"].nav-link').forEach(function (link) {
@@ -1899,6 +2004,203 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
           window.location.href = 'mailto:briones.g.bryle@gmail.com';
         });
       });
+    })();
+  </script>
+  <script>
+    /* Recommendations — read more toggle */
+    document.querySelectorAll('.rec-text').forEach(function(p){
+      p.classList.add('is-clamped');
+      var btn = p.nextElementSibling;
+      if (p.scrollHeight > p.clientHeight + 2){
+        btn.classList.remove('hidden');
+      } else {
+        p.classList.remove('is-clamped');
+      }
+      btn.addEventListener('click', function(){
+        var expanded = btn.getAttribute('aria-expanded') === 'true';
+        p.classList.toggle('is-clamped', expanded);
+        btn.textContent  = expanded ? 'Read more' : 'Read less';
+        btn.setAttribute('aria-expanded', String(!expanded));
+      });
+    });
+  </script>
+  <script>
+    (function(){
+      var wrap   = document.getElementById('rec-wrap');
+      var track  = document.getElementById('rec-track');
+      var dots   = Array.from(document.querySelectorAll('.rec-dot'));
+      var cards  = Array.from(track ? track.querySelectorAll('.rec-card') : []);
+      if (!wrap || !track || !cards.length) return;
+
+      var TOTAL      = cards.length;
+      var INTERVAL   = 3800;
+      var GAP        = 24; /* gap-6 */
+      var current    = 0;
+      var curX       = 0;
+      var timer      = null;
+      var isVisible  = false;
+      var recentDrag = false; /* true briefly after a mouse drag to block the trailing click */
+
+      /* Compute the translateX that centers card[idx] in the wrap */
+      function targetX(idx){
+        var W = cards[0].offsetWidth;
+        var V = wrap.offsetWidth;
+        return V / 2 - W / 2 - idx * (W + GAP);
+      }
+
+      /* Move the track — instant skips transition, smooth uses CSS */
+      function moveTo(x, instant){
+        curX = x;
+        if (instant) track.classList.add('no-transition');
+        track.style.transform = 'translateX(' + x + 'px)';
+        if (instant) track.offsetHeight; /* force reflow so class is applied before removal */
+        if (instant) track.classList.remove('no-transition');
+      }
+
+      function syncDots(idx){
+        dots.forEach(function(d, i){
+          d.classList.toggle('bg-blue-500', i === idx);
+          d.classList.toggle('w-5',         i === idx);
+          d.classList.toggle('bg-zinc-600', i !== idx);
+          d.classList.toggle('w-2',         i !== idx);
+        });
+      }
+
+      function updateActive(idx){
+        cards.forEach(function(c, i){ c.classList.toggle('active', i === idx); });
+        syncDots(idx);
+        current = idx;
+      }
+
+      function goTo(idx){
+        idx = ((idx % TOTAL) + TOTAL) % TOTAL;
+        moveTo(targetX(idx), false); /* always smooth — CSS transition handles it */
+        updateActive(idx);
+      }
+
+      function startAuto(){
+        if (timer || !isVisible) return;
+        timer = setInterval(function(){ goTo(current + 1); }, INTERVAL);
+      }
+      function stopAuto(){ clearInterval(timer); timer = null; }
+      function bounce(fn){ stopAuto(); fn(); setTimeout(startAuto, 4000); }
+
+      /* ── Card clicks ─────────────────────────────────────────────── */
+      cards.forEach(function(c, i){
+        var tapX = 0, tapY = 0, fromTouch = false;
+        c.addEventListener('touchstart', function(e){
+          fromTouch = true;
+          tapX = e.touches[0].clientX;
+          tapY = e.touches[0].clientY;
+        }, { passive: true });
+        c.addEventListener('click', function(e){
+          if (e.target.closest('.rec-toggle')) return;
+          if (fromTouch){
+            /* touch: only navigate if it was a tap, not a swipe */
+            fromTouch = false;
+            var dx = e.clientX - tapX, dy = e.clientY - tapY;
+            if (Math.sqrt(dx*dx + dy*dy) >= 10) return;
+          } else {
+            /* mouse: skip if user just finished dragging */
+            if (recentDrag) return;
+          }
+          if (i !== current) bounce(function(){ goTo(i); });
+        });
+      });
+
+      /* ── Dot clicks ──────────────────────────────────────────────── */
+      dots.forEach(function(d){
+        var idx = parseInt(d.getAttribute('data-rec-idx'), 10);
+        function nav(){ if (!isNaN(idx)) bounce(function(){ goTo(idx); }); }
+        d.addEventListener('click', nav);
+        d.addEventListener('keydown', function(e){
+          if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); nav(); }
+        });
+      });
+
+      /* ── Touch drag (mobile / tablet) ────────────────────────────── */
+      var t = { startX: 0, startCurX: 0, moved: false };
+      wrap.addEventListener('touchstart', function(e){
+        stopAuto();
+        t.startX   = e.touches[0].clientX;
+        t.startCurX = curX;
+        t.moved    = false;
+        track.classList.add('no-transition');
+      }, { passive: true });
+      wrap.addEventListener('touchmove', function(e){
+        var dx = e.touches[0].clientX - t.startX;
+        if (Math.abs(dx) > 5) t.moved = true;
+        curX = t.startCurX + dx;
+        track.style.transform = 'translateX(' + curX + 'px)';
+      }, { passive: true });
+      wrap.addEventListener('touchend', function(e){
+        track.classList.remove('no-transition');
+        var dx = e.changedTouches[0].clientX - t.startX;
+        var W  = cards[0].offsetWidth;
+        if (t.moved && Math.abs(dx) > W * 0.2){
+          goTo(dx < 0 ? current + 1 : current - 1);
+        } else {
+          goTo(current); /* snap back */
+        }
+        setTimeout(startAuto, 800);
+      }, { passive: true });
+
+      /* ── Mouse drag (desktop) ────────────────────────────────────── */
+      var m = { down: false, startX: 0, startCurX: 0, moved: false };
+      track.addEventListener('mousedown', function(e){
+        m.down     = true;
+        m.startX   = e.clientX;
+        m.startCurX = curX;
+        m.moved    = false;
+        track.classList.add('no-transition', 'is-dragging');
+        stopAuto();
+        e.preventDefault();
+      });
+      document.addEventListener('mousemove', function(e){
+        if (!m.down) return;
+        var dx = e.clientX - m.startX;
+        if (Math.abs(dx) > 4){ m.moved = true; recentDrag = true; }
+        curX = m.startCurX + dx;
+        track.style.transform = 'translateX(' + curX + 'px)';
+      });
+      function endMouse(e){
+        if (!m.down) return;
+        m.down = false;
+        track.classList.remove('no-transition', 'is-dragging');
+        var dx = e.clientX - m.startX;
+        var W  = cards[0].offsetWidth;
+        if (m.moved && Math.abs(dx) > W * 0.15){
+          goTo(dx < 0 ? current + 1 : current - 1);
+        } else {
+          goTo(current);
+        }
+        /* clear recentDrag after the click event has had a chance to fire */
+        setTimeout(function(){ recentDrag = false; }, 100);
+        setTimeout(startAuto, 800);
+      }
+      document.addEventListener('mouseup',    endMouse);
+      document.addEventListener('mouseleave', endMouse);
+
+      /* ── Recalculate on resize ───────────────────────────────────── */
+      window.addEventListener('resize', function(){
+        moveTo(targetX(current), true);
+      });
+
+      /* ── Visibility-gated auto-play ──────────────────────────────── */
+      var section = document.getElementById('recommendations');
+      if (section && window.IntersectionObserver){
+        new IntersectionObserver(function(entries){
+          isVisible = entries[0].isIntersecting;
+          isVisible ? startAuto() : stopAuto();
+        }, { threshold: 0.2 }).observe(section);
+      } else {
+        isVisible = true;
+        startAuto();
+      }
+
+      /* ── Init ────────────────────────────────────────────────────── */
+      moveTo(targetX(0), true);
+      updateActive(0);
     })();
   </script>
 </body>
