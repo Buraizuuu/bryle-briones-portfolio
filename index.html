@@ -367,6 +367,7 @@
     #rec-track.is-dragging,
     #rec-track.is-dragging .rec-card { cursor: grabbing !important; }
     #rec-track.no-transition { transition: none !important; }
+    #rec-track.is-snap-back  { transition: transform 0.35s cubic-bezier(0.23, 1, 0.32, 1) !important; }
     .rec-card {
       transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94), opacity 0.5s ease,
                   border-color 0.5s ease, box-shadow 0.5s ease;
@@ -2038,35 +2039,42 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
   </script>
   <script>
     (function(){
-      var wrap   = document.getElementById('rec-wrap');
-      var track  = document.getElementById('rec-track');
-      var dots   = Array.from(document.querySelectorAll('.rec-dot'));
-      var cards  = Array.from(track ? track.querySelectorAll('.rec-card') : []);
+      var wrap  = document.getElementById('rec-wrap');
+      var track = document.getElementById('rec-track');
+      var dots  = Array.from(document.querySelectorAll('.rec-dot'));
+      var cards = Array.from(track ? track.querySelectorAll('.rec-card') : []);
       if (!wrap || !track || !cards.length) return;
 
-      var TOTAL      = cards.length;
-      var INTERVAL   = 3800;
-      var GAP        = 24; /* gap-6 */
-      var current    = 0;
-      var curX       = 0;
-      var timer      = null;
-      var isVisible  = false;
-      var recentDrag   = false; /* true briefly after a mouse drag to block the trailing click */
-      var restartTimer = null;  /* setTimeout handle for auto-play restart */
+      var TOTAL        = cards.length;
+      var INTERVAL     = 3800;
+      var GAP          = 24;    /* matches gap-6 */
+      var current      = 0;
+      var curX         = 0;
+      var timer        = null;
+      var isVisible    = false;
+      var recentDrag   = false;
+      var restartTimer = null;
 
-      /* Compute the translateX that centers card[idx] in the wrap */
+      /* Center card[idx] in the viewport */
       function targetX(idx){
         var W = cards[0].offsetWidth;
         var V = wrap.offsetWidth;
         return V / 2 - W / 2 - idx * (W + GAP);
       }
 
-      /* Move the track — instant skips transition, smooth uses CSS */
+      /* Logarithmic resistance for boundary pull — feels like hitting a wall */
+      function rubberBand(dx){
+        var abs = Math.abs(dx);
+        var W   = cards[0].offsetWidth || 400;
+        return (dx < 0 ? -1 : 1) * W * 0.55 * (1 - 1 / (abs * 0.55 / W + 1));
+      }
+
+      /* Move track — instant bypasses CSS transition */
       function moveTo(x, instant){
         curX = x;
         if (instant) track.classList.add('no-transition');
         track.style.transform = 'translateX(' + x + 'px)';
-        if (instant) track.offsetHeight; /* force reflow so class is applied before removal */
+        if (instant) track.offsetHeight;
         if (instant) track.classList.remove('no-transition');
       }
 
@@ -2082,21 +2090,16 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
       function updateActive(idx){
         cards.forEach(function(c, i){
           c.classList.toggle('active', i === idx);
-
           var p   = c.querySelector('.rec-text');
           var btn = c.querySelector('.rec-toggle');
           if (!p || !btn) return;
-
           if (i !== idx){
-            /* collapse any expanded card as it leaves the spotlight */
             if (btn.getAttribute('aria-expanded') === 'true'){
               p.classList.add('is-clamped');
               btn.textContent = 'Read more';
               btn.setAttribute('aria-expanded', 'false');
             }
           } else {
-            /* re-verify clamp accuracy each time a card becomes active
-               (initial check can be off before fonts / layout settle) */
             if (btn.getAttribute('aria-expanded') !== 'true'){
               p.classList.add('is-clamped');
               if (p.scrollHeight > p.clientHeight + 2){
@@ -2112,38 +2115,39 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
         current = idx;
       }
 
+      /* Navigate to idx, clamped — no looping */
       function goTo(idx){
-        idx = ((idx % TOTAL) + TOTAL) % TOTAL;
-        moveTo(targetX(idx), false); /* always smooth — CSS transition handles it */
-        updateActive(idx);
-      }
-
-      /* Clamp navigation for swipe/drag — no wrap-around at boundaries */
-      function swipeTo(idx){
         idx = Math.max(0, Math.min(TOTAL - 1, idx));
         moveTo(targetX(idx), false);
         updateActive(idx);
       }
 
+      /* Snap back with spring easing — used for sub-threshold drags and boundary bounce */
+      function snapBack(idx){
+        idx = Math.max(0, Math.min(TOTAL - 1, idx));
+        track.classList.add('is-snap-back');
+        moveTo(targetX(idx), false);
+        updateActive(idx);
+        setTimeout(function(){ track.classList.remove('is-snap-back'); }, 380);
+      }
+
+      /* ── Autoplay ────────────────────────────────────────────────── */
       function startAuto(){
         if (timer || !isVisible) return;
-        timer = setInterval(function(){ goTo(current + 1); }, INTERVAL);
+        timer = setInterval(function(){
+          if (current < TOTAL - 1) goTo(current + 1);
+        }, INTERVAL);
       }
       function stopAuto(){ clearInterval(timer); timer = null; }
-
-      /* Schedule a fresh auto-play restart, cancelling any pending one */
       function scheduleRestart(delay){
         clearTimeout(restartTimer);
         restartTimer = setTimeout(startAuto, delay != null ? delay : 4000);
       }
-
-      /* Stop auto AND cancel any pending restart — call on interaction start */
       function pauseAuto(){
         stopAuto();
         clearTimeout(restartTimer);
         restartTimer = null;
       }
-
       function bounce(fn){ pauseAuto(); fn(); scheduleRestart(4000); }
 
       /* ── Card clicks ─────────────────────────────────────────────── */
@@ -2157,12 +2161,10 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
         c.addEventListener('click', function(e){
           if (e.target.closest('.rec-toggle')) return;
           if (fromTouch){
-            /* touch: only navigate if it was a tap, not a swipe */
             fromTouch = false;
             var dx = e.clientX - tapX, dy = e.clientY - tapY;
             if (Math.sqrt(dx*dx + dy*dy) >= 10) return;
           } else {
-            /* mouse: skip if user just finished dragging */
             if (recentDrag) return;
           }
           if (i !== current) bounce(function(){ goTo(i); });
@@ -2179,7 +2181,7 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
         });
       });
 
-      /* ── Touch drag (mobile / tablet) ────────────────────────────── */
+      /* ── Touch drag ──────────────────────────────────────────────── */
       var t = { startX: 0, startCurX: 0, moved: false, active: false };
       wrap.addEventListener('touchstart', function(e){
         if (!e.target.closest('.rec-card')){ t.active = false; return; }
@@ -2190,31 +2192,33 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
         t.moved     = false;
         track.classList.add('no-transition');
       }, { passive: true });
+
       wrap.addEventListener('touchmove', function(e){
         if (!t.active) return;
-        var dx = e.touches[0].clientX - t.startX;
+        var dx      = e.touches[0].clientX - t.startX;
         if (Math.abs(dx) > 5) t.moved = true;
-        /* rubber band resistance at first/last card boundaries */
-        var eff = (current === 0 && dx > 0) || (current === TOTAL - 1 && dx < 0)
-          ? dx * 0.25 : dx;
-        curX = t.startCurX + eff;
+        var atStart = current === 0         && dx > 0;
+        var atEnd   = current === TOTAL - 1 && dx < 0;
+        curX = t.startCurX + (atStart || atEnd ? rubberBand(dx) : dx);
         track.style.transform = 'translateX(' + curX + 'px)';
       }, { passive: true });
+
       wrap.addEventListener('touchend', function(e){
         if (!t.active) return;
-        t.active = false;
+        t.active  = false;
+        var dx    = e.changedTouches[0].clientX - t.startX;
+        var W     = cards[0].offsetWidth;
+        var atBoundary = (current === 0 && dx > 0) || (current === TOTAL - 1 && dx < 0);
         track.classList.remove('no-transition');
-        var dx = e.changedTouches[0].clientX - t.startX;
-        var W  = cards[0].offsetWidth;
-        if (t.moved && Math.abs(dx) > W * 0.2){
-          swipeTo(dx < 0 ? current + 1 : current - 1);
+        if (!atBoundary && t.moved && Math.abs(dx) > W * 0.2){
+          goTo(dx < 0 ? current + 1 : current - 1);
         } else {
-          swipeTo(current); /* snap back */
+          snapBack(current);
         }
         scheduleRestart(4000);
       }, { passive: true });
 
-      /* ── Mouse drag (desktop) ────────────────────────────────────── */
+      /* ── Mouse drag ──────────────────────────────────────────────── */
       var m = { down: false, startX: 0, startCurX: 0, moved: false };
       track.addEventListener('mousedown', function(e){
         if (!e.target.closest('.rec-card')) return;
@@ -2228,26 +2232,25 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
       });
       document.addEventListener('mousemove', function(e){
         if (!m.down) return;
-        var dx = e.clientX - m.startX;
+        var dx    = e.clientX - m.startX;
         if (Math.abs(dx) > 4){ m.moved = true; recentDrag = true; }
-        /* rubber band resistance at first/last card boundaries */
-        var eff = (current === 0 && dx > 0) || (current === TOTAL - 1 && dx < 0)
-          ? dx * 0.25 : dx;
-        curX = m.startCurX + eff;
+        var atStart = current === 0         && dx > 0;
+        var atEnd   = current === TOTAL - 1 && dx < 0;
+        curX = m.startCurX + (atStart || atEnd ? rubberBand(dx) : dx);
         track.style.transform = 'translateX(' + curX + 'px)';
       });
       function endMouse(e){
         if (!m.down) return;
-        m.down = false;
+        m.down    = false;
+        var dx    = e.clientX - m.startX;
+        var W     = cards[0].offsetWidth;
+        var atBoundary = (current === 0 && dx > 0) || (current === TOTAL - 1 && dx < 0);
         track.classList.remove('no-transition', 'is-dragging');
-        var dx = e.clientX - m.startX;
-        var W  = cards[0].offsetWidth;
-        if (m.moved && Math.abs(dx) > W * 0.15){
-          swipeTo(dx < 0 ? current + 1 : current - 1);
+        if (!atBoundary && m.moved && Math.abs(dx) > W * 0.15){
+          goTo(dx < 0 ? current + 1 : current - 1);
         } else {
-          swipeTo(current);
+          snapBack(current);
         }
-        /* clear recentDrag after the click event has had a chance to fire */
         setTimeout(function(){ recentDrag = false; }, 100);
         scheduleRestart(4000);
       }
@@ -2262,13 +2265,12 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
         cards.forEach(function(c){ c.style.minHeight = maxH + 'px'; });
       }
 
-      /* ── Recalculate on resize ───────────────────────────────────── */
       window.addEventListener('resize', function(){
         moveTo(targetX(current), true);
         equalizeCards();
       });
 
-      /* ── Visibility-gated auto-play ──────────────────────────────── */
+      /* ── Visibility-gated autoplay ──────────────────────────────── */
       var section = document.getElementById('recommendations');
       if (section && window.IntersectionObserver){
         new IntersectionObserver(function(entries){
