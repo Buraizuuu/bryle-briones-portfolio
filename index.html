@@ -374,6 +374,13 @@
       opacity: 0.4;
       transform: scale(0.86);
       cursor: pointer;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      will-change: transform, opacity;
+    }
+    #rec-track.is-dragging .rec-card,
+    #rec-track.no-transition .rec-card {
+      transition: none !important;
     }
     .rec-card.active {
       opacity: 1;
@@ -1358,6 +1365,17 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
           <svg class="w-8 h-8 text-blue-500/60 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
           <div class="flex-1 flex flex-col gap-2">
             <p class="rec-text text-zinc-300 text-sm leading-relaxed">
+              I had the pleasure of recruiting Bryle in my team and found him to be a highly reliable and efficient QA Engineer. He consistently delivered thorough testing, identified issues proactively, and helped maintain high-quality standards across projects. His attention to detail, strong communication skills, and collaborative approach made them a valued member of the team. Bryle was dependable, professional, and always willing to go the extra mile to ensure successful project delivery which I valued greatly. I would gladly recommend him for any QA role and wish them every success in his future career.
+            </p>
+            <button class="rec-toggle hidden text-blue-400 hover:text-blue-300 text-xs font-medium self-start transition-colors duration-150 cursor-pointer focus-visible:outline-none focus-visible:underline" aria-expanded="false">Read more</button>
+          </div>
+          <p class="text-zinc-500 text-xs font-medium pt-2 border-t border-white/10">J.B. &middot; Senior Delivery Manager</p>
+        </article>
+
+        <article class="rec-card glass-card rounded-2xl p-6 flex flex-col gap-4 flex-shrink-0 w-[84vw] md:w-[530px]">
+          <svg class="w-8 h-8 text-blue-500/60 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+          <div class="flex-1 flex flex-col gap-2">
+            <p class="rec-text text-zinc-300 text-sm leading-relaxed">
               I've worked with Bryle for a couple years. He is really thorough in his work ensuring work is done the right way. From a more "social" point of view to avoid talking just about work related stuff. He is quite fun to have a chat with!
             </p>
             <button class="rec-toggle hidden text-blue-400 hover:text-blue-300 text-xs font-medium self-start transition-colors duration-150 cursor-pointer focus-visible:outline-none focus-visible:underline" aria-expanded="false">Read more</button>
@@ -1417,6 +1435,7 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
         <span role="button" tabindex="0" data-rec-idx="2" class="rec-dot block h-2 rounded-full bg-zinc-600 transition-all duration-300 w-2 cursor-pointer" aria-label="Recommendation 3"></span>
         <span role="button" tabindex="0" data-rec-idx="3" class="rec-dot block h-2 rounded-full bg-zinc-600 transition-all duration-300 w-2 cursor-pointer" aria-label="Recommendation 4"></span>
         <span role="button" tabindex="0" data-rec-idx="4" class="rec-dot block h-2 rounded-full bg-zinc-600 transition-all duration-300 w-2 cursor-pointer" aria-label="Recommendation 5"></span>
+        <span role="button" tabindex="0" data-rec-idx="5" class="rec-dot block h-2 rounded-full bg-zinc-600 transition-all duration-300 w-2 cursor-pointer" aria-label="Recommendation 6"></span>
       </div>
     </div>
   </section>
@@ -2073,7 +2092,7 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
       function moveTo(x, instant){
         curX = x;
         if (instant) track.classList.add('no-transition');
-        track.style.transform = 'translateX(' + x + 'px)';
+        track.style.transform = 'translate3d(' + Math.round(x) + 'px,0,0)';
         if (instant) track.offsetHeight;
         if (instant) track.classList.remove('no-transition');
       }
@@ -2182,20 +2201,37 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
       });
 
       /* ── Touch drag ──────────────────────────────────────────────── */
-      var t = { startX: 0, startCurX: 0, moved: false, active: false };
+      var t = { startX: 0, startY: 0, startCurX: 0, moved: false, active: false, dir: null };
       wrap.addEventListener('touchstart', function(e){
         if (!e.target.closest('.rec-card')){ t.active = false; return; }
         t.active    = true;
-        pauseAuto();
+        t.dir       = null;   /* direction decided on first meaningful move */
         t.startX    = e.touches[0].clientX;
+        t.startY    = e.touches[0].clientY;
         t.startCurX = curX;
         t.moved     = false;
-        track.classList.add('no-transition');
+        /* don't lock in no-transition yet — wait to confirm horizontal intent */
       }, { passive: true });
 
       wrap.addEventListener('touchmove', function(e){
         if (!t.active) return;
-        var dx      = e.touches[0].clientX - t.startX;
+        var dx = e.touches[0].clientX - t.startX;
+        var dy = e.touches[0].clientY - t.startY;
+
+        /* decide direction on first movement past a small dead-zone */
+        if (!t.dir) {
+          if (Math.abs(dx) < 4 && Math.abs(dy) < 4) return;
+          t.dir = Math.abs(dx) >= Math.abs(dy) ? 'h' : 'v';
+          if (t.dir === 'h') {
+            pauseAuto();
+            track.classList.add('no-transition');
+          } else {
+            t.active = false; /* vertical scroll — hand back to browser */
+            return;
+          }
+        }
+        if (t.dir !== 'h') return;
+
         if (Math.abs(dx) > 5) t.moved = true;
         var W       = cards[0].offsetWidth;
         var atStart = current === 0         && dx > 0;
@@ -2204,12 +2240,13 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
         var overFwd = !atStart && dx >  (W + GAP);
         var overBck = !atEnd   && dx < -(W + GAP);
         curX = t.startCurX + (atStart || atEnd || overFwd || overBck ? rubberBand(dx) : dx);
-        track.style.transform = 'translateX(' + curX + 'px)';
+        track.style.transform = 'translate3d(' + Math.round(curX) + 'px,0,0)';
       }, { passive: true });
 
       wrap.addEventListener('touchend', function(e){
         if (!t.active) return;
         t.active  = false;
+        if (t.dir !== 'h') return; /* was a scroll — nothing to do */
         var dx    = e.changedTouches[0].clientX - t.startX;
         var W     = cards[0].offsetWidth;
         var atBoundary = (current === 0 && dx > 0) || (current === TOTAL - 1 && dx < 0);
@@ -2241,7 +2278,7 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
         var atStart = current === 0         && dx > 0;
         var atEnd   = current === TOTAL - 1 && dx < 0;
         curX = m.startCurX + (atStart || atEnd ? rubberBand(dx) : dx);
-        track.style.transform = 'translateX(' + curX + 'px)';
+        track.style.transform = 'translate3d(' + Math.round(curX) + 'px,0,0)';
       });
       function endMouse(e){
         if (!m.down) return;
