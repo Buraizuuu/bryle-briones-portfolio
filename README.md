@@ -15,7 +15,8 @@ A single-page portfolio for a QA Automation Engineer targeting Senior QA / SDET 
 - **Experience** — tabbed timeline across 6 roles including current position at UCG, New Zealand
 - **Certifications** — 3 Katalon badges (Practitioner, Professional, Expert)
 - **Projects** — PriceLOCQ, ReizTech, Playwright AI QA Framework, Maestro Mobile Automation
-- **Contact** — email, LinkedIn, GitHub, phone
+- **Recommendations** — spotlight carousel with colleague testimonials; initials avatars, read-more toggle, touch/click navigation
+- **Contact** — click-to-copy email, LinkedIn, GitHub, phone
 
 ---
 
@@ -29,6 +30,7 @@ Every part of this project was produced through AI collaboration:
 | HTML/CSS | Generated and iterated by Claude, validated against a 69-point slop test |
 | Copy & content | Extracted from existing profile data, refined by Claude |
 | Accessibility | `focus-visible`, `prefers-reduced-motion`, `aria-label` — audited by Claude |
+| SEO | Title, meta description, Open Graph, JSON-LD structured data |
 | Git workflow | Commits, pushes, and branch management via Claude Code CLI |
 | Deployment | Vercel, wired up through conversation |
 
