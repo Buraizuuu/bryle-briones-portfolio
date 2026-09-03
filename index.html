@@ -396,6 +396,11 @@
     .scrollbar-none::-webkit-scrollbar { display: none; }
     .rec-text.is-clamped { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 6; line-clamp: 6; overflow: hidden; }
 
+    /* Projects carousel — native scroll-snap, no JS drag physics needed */
+    #proj-track { scroll-snap-type: x mandatory; scroll-behavior: smooth; }
+    .proj-card  { scroll-snap-align: start; }
+    @media (prefers-reduced-motion: reduce) { #proj-track { scroll-behavior: auto; } }
+
     /* Recommendations spotlight carousel — transform-based, no scroll-snap */
     #rec-wrap  { overflow: hidden; }
     #rec-track {
@@ -1132,10 +1137,18 @@
         <p class="text-zinc-500 mt-4 max-w-lg mx-auto">Open-source automation frameworks built with best practices and scalability in mind.</p>
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div class="relative" id="proj-wrap">
+        <button type="button" id="proj-prev" aria-label="Previous project" class="proj-arrow hidden sm:flex absolute -left-4 lg:-left-5 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full glass items-center justify-center text-zinc-300 hover:text-white transition-all duration-200 cursor-pointer disabled:opacity-30 disabled:pointer-events-none">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+        </button>
+        <button type="button" id="proj-next" aria-label="Next project" class="proj-arrow hidden sm:flex absolute -right-4 lg:-right-5 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full glass items-center justify-center text-zinc-300 hover:text-white transition-all duration-200 cursor-pointer disabled:opacity-30 disabled:pointer-events-none">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        </button>
+
+        <div id="proj-track" class="flex gap-6 overflow-x-auto scrollbar-none pb-2">
 
         <!-- ── Project 1: QAlchemy ── -->
-        <div class="glass-card rounded-3xl overflow-hidden group flex flex-col">
+        <div class="proj-card glass-card rounded-3xl overflow-hidden group flex flex-col flex-shrink-0 w-[86vw] sm:w-[420px]">
           <div class="relative h-32 sm:h-40 bg-zinc-950 overflow-hidden flex-shrink-0 flex items-center justify-center"
                style="background-image:linear-gradient(rgba(255,255,255,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.06) 1px,transparent 1px);background-size:24px 24px;">
             <div class="absolute w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-indigo-500/20 blur-2xl"></div>
@@ -1185,7 +1198,7 @@
         </div>
 
         <!-- ── Project 2: Lendra ── -->
-        <div class="glass-card rounded-3xl overflow-hidden group flex flex-col">
+        <div class="proj-card glass-card rounded-3xl overflow-hidden group flex flex-col flex-shrink-0 w-[86vw] sm:w-[420px]">
           <div class="relative h-32 sm:h-40 bg-zinc-950 overflow-hidden flex-shrink-0 flex items-center justify-center"
                style="background-image:linear-gradient(rgba(255,255,255,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.06) 1px,transparent 1px);background-size:24px 24px;">
             <div class="absolute w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-emerald-500/20 blur-2xl"></div>
@@ -1233,8 +1246,55 @@
           </div>
         </div>
 
-        <!-- ── Project 3: Playwright-Demo ── -->
-        <div class="glass-card rounded-3xl overflow-hidden group flex flex-col">
+        <!-- ── Project 3: OTeva ── -->
+        <div class="proj-card glass-card rounded-3xl overflow-hidden group flex flex-col flex-shrink-0 w-[86vw] sm:w-[420px]">
+          <div class="relative h-32 sm:h-40 bg-zinc-950 overflow-hidden flex-shrink-0 flex items-center justify-center"
+               style="background-image:linear-gradient(rgba(255,255,255,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.06) 1px,transparent 1px);background-size:24px 24px;">
+            <div class="absolute w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-pink-500/20 blur-2xl"></div>
+            <img src="assets/oteva-icon.png" alt="OTeva app icon" class="relative w-14 h-20 sm:w-16 sm:h-24 object-contain drop-shadow-lg" />
+            <div class="absolute top-4 left-4 glass rounded-xl px-3 py-1.5 flex items-center gap-2">
+              <div class="relative flex h-2 w-2">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </div>
+              <span class="text-xs text-zinc-300 font-medium">Live</span>
+            </div>
+          </div>
+
+          <div class="p-5 sm:p-7 flex flex-col flex-1">
+            <div class="mb-3">
+              <div class="flex items-center justify-between gap-3 mb-1">
+                <h3 class="font-heading text-base sm:text-lg font-semibold text-white min-w-0 leading-snug">OTeva</h3>
+                <span class="text-xs bg-pink-500/10 border border-pink-500/20 text-pink-400 px-2.5 py-1 rounded-lg font-medium flex-shrink-0">TypeScript</span>
+              </div>
+              <p class="text-zinc-600 text-xs">Therapy & evaluation · Desktop app · SQLite</p>
+            </div>
+
+            <p class="text-zinc-400 text-sm leading-relaxed mb-4">
+              A desktop practice management app for occupational therapists to manage patients, clinics, therapists, diagnoses, and assessments. Drafts SOAP reports with AI assistance across multiple providers, and stores everything locally with SQLite. Built as a native app with Tauri.
+            </p>
+
+            <div class="flex flex-wrap gap-1.5 mb-5">
+              <span class="skill-pill text-xs px-2.5 py-0.5 rounded-full">Next.js 16</span>
+              <span class="skill-pill text-xs px-2.5 py-0.5 rounded-full">React 19</span>
+              <span class="skill-pill text-xs px-2.5 py-0.5 rounded-full">TypeScript</span>
+              <span class="skill-pill text-xs px-2.5 py-0.5 rounded-full">Tailwind CSS v4</span>
+              <span class="skill-pill text-xs px-2.5 py-0.5 rounded-full">Tauri 2</span>
+              <span class="skill-pill text-xs px-2.5 py-0.5 rounded-full">SQLite</span>
+              <span class="skill-pill text-xs px-2.5 py-0.5 rounded-full">Multi-Provider AI</span>
+            </div>
+
+            <div class="pt-4 border-t border-white/5 flex items-center gap-4 mt-auto">
+              <span class="flex items-center gap-1.5 text-sm text-zinc-600">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4m6 0a10 10 0 11-20 0 10 10 0 0120 0z"/></svg>
+                In development
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Project 4: Playwright-Demo ── -->
+        <div class="proj-card glass-card rounded-3xl overflow-hidden group flex flex-col flex-shrink-0 w-[86vw] sm:w-[420px]">
           <div class="relative h-32 sm:h-40 bg-gradient-to-br from-blue-900/60 to-cyan-900/50 overflow-hidden flex-shrink-0">
             <div class="absolute inset-0 opacity-[0.07] font-mono text-xs text-blue-200 p-4 leading-5 overflow-hidden select-none whitespace-pre" aria-hidden="true">import &#123; test, expect &#125; from '@playwright/test';
 
@@ -1294,8 +1354,8 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
           </div>
         </div>
 
-        <!-- ── Project 4: Playwright Visual Testing ── -->
-        <div class="glass-card rounded-3xl overflow-hidden group flex flex-col">
+        <!-- ── Project 5: Playwright Visual Testing ── -->
+        <div class="proj-card glass-card rounded-3xl overflow-hidden group flex flex-col flex-shrink-0 w-[86vw] sm:w-[420px]">
           <div class="relative h-32 sm:h-40 bg-gradient-to-br from-violet-900/60 to-purple-900/50 overflow-hidden flex-shrink-0">
             <div class="absolute inset-0 opacity-[0.07] font-mono text-xs text-violet-200 p-4 leading-5 overflow-hidden select-none whitespace-pre" aria-hidden="true">test('visual regression — dashboard', async ({ page }) => {
   await page.goto('/web/index.php/dashboard');
@@ -1353,6 +1413,15 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
           </div>
         </div>
 
+        </div>
+
+        <div class="flex justify-center gap-3 mt-6" role="group" aria-label="Project navigation">
+          <span role="button" tabindex="0" data-proj-idx="0" class="proj-dot block h-2 rounded-full bg-blue-500 transition-all duration-300 w-5 cursor-pointer" aria-label="Project 1"></span>
+          <span role="button" tabindex="0" data-proj-idx="1" class="proj-dot block h-2 rounded-full bg-zinc-600 transition-all duration-300 w-2 cursor-pointer" aria-label="Project 2"></span>
+          <span role="button" tabindex="0" data-proj-idx="2" class="proj-dot block h-2 rounded-full bg-zinc-600 transition-all duration-300 w-2 cursor-pointer" aria-label="Project 3"></span>
+          <span role="button" tabindex="0" data-proj-idx="3" class="proj-dot block h-2 rounded-full bg-zinc-600 transition-all duration-300 w-2 cursor-pointer" aria-label="Project 4"></span>
+          <span role="button" tabindex="0" data-proj-idx="4" class="proj-dot block h-2 rounded-full bg-zinc-600 transition-all duration-300 w-2 cursor-pointer" aria-label="Project 5"></span>
+        </div>
       </div>
 
       <div class="text-center mt-8">
@@ -2080,6 +2149,65 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
       });
     });
   </script>
+  <script>
+    (function(){
+      var track = document.getElementById('proj-track');
+      var dots  = Array.from(document.querySelectorAll('.proj-dot'));
+      var prev  = document.getElementById('proj-prev');
+      var next  = document.getElementById('proj-next');
+      var cards = Array.from(track ? track.querySelectorAll('.proj-card') : []);
+      if (!track || !cards.length) return;
+
+      var TOTAL = cards.length;
+      var GAP   = 24; /* matches gap-6 */
+
+      function step(){ return cards[0].offsetWidth + GAP; }
+
+      function currentIndex(){
+        return Math.round(track.scrollLeft / step());
+      }
+
+      function syncUI(){
+        var idx = Math.max(0, Math.min(TOTAL - 1, currentIndex()));
+        dots.forEach(function(d, i){
+          d.classList.toggle('bg-blue-500', i === idx);
+          d.classList.toggle('w-5',         i === idx);
+          d.classList.toggle('bg-zinc-600', i !== idx);
+          d.classList.toggle('w-2',         i !== idx);
+        });
+        if (prev) prev.disabled = track.scrollLeft <= 4;
+        if (next) next.disabled = track.scrollLeft >= track.scrollWidth - track.clientWidth - 4;
+      }
+
+      function goTo(idx){
+        idx = Math.max(0, Math.min(TOTAL - 1, idx));
+        track.scrollTo({ left: idx * step(), behavior: 'smooth' });
+      }
+
+      var rafPending = false;
+      track.addEventListener('scroll', function(){
+        if (rafPending) return;
+        rafPending = true;
+        requestAnimationFrame(function(){ syncUI(); rafPending = false; });
+      }, { passive: true });
+
+      if (prev) prev.addEventListener('click', function(){ goTo(currentIndex() - 1); });
+      if (next) next.addEventListener('click', function(){ goTo(currentIndex() + 1); });
+
+      dots.forEach(function(d){
+        var idx = parseInt(d.getAttribute('data-proj-idx'), 10);
+        function nav(){ if (!isNaN(idx)) goTo(idx); }
+        d.addEventListener('click', nav);
+        d.addEventListener('keydown', function(e){
+          if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); nav(); }
+        });
+      });
+
+      window.addEventListener('resize', function(){ goTo(currentIndex()); });
+      syncUI();
+    })();
+  </script>
+
   <script>
     (function(){
       var wrap  = document.getElementById('rec-wrap');
