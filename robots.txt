@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-Sitemap: https://bryle-briones-portfolio.vercel.app/sitemap.xml
+Sitemap: https://bryle-briones.vercel.app/sitemap.xml

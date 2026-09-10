@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bryle Briones | QA Automation Engineer &amp; SDET</title>
-  <meta name="description" content="Bryle Briones is a QA Automation Engineer with 10+ years of experience building test frameworks with Playwright, Selenium &amp; Katalon across fintech, telecom, biotech, and e-commerce. Open to QA roles in New Zealand and remote." />
+  <meta name="description" content="Bryle Briones — QA Automation Engineer, 10+ years with Playwright, Selenium &amp; Katalon across fintech, biotech &amp; telecom. Open to QA/SDET roles in NZ and remote." />
   <link rel="icon" href="assets/logo.svg" type="image/svg+xml" />
   <link rel="shortcut icon" href="assets/logo.svg" />
   <link rel="canonical" href="https://bryle-briones.vercel.app/" />
@@ -22,11 +22,13 @@
   <meta property="og:title" content="Bryle Briones | QA Automation Engineer &amp; SDET" />
   <meta property="og:description" content="QA Automation Engineer with 10+ years of experience building test frameworks with Playwright, Selenium &amp; Katalon across fintech, telecom, biotech, and e-commerce." />
   <meta property="og:image" content="https://bryle-briones.vercel.app/assets/Profile_Picture.JPG" />
+  <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content="Bryle Briones — QA Automation Engineer &amp; SDET" />
   <meta property="og:site_name" content="Bryle Briones Portfolio" />
   <meta property="og:locale" content="en_NZ" />
+  <meta property="og:updated_time" content="2026-09-10T00:00:00+00:00" />
   <meta property="profile:first_name" content="Bryle" />
   <meta property="profile:last_name" content="Briones" />
 
@@ -96,7 +98,7 @@
   {
     "@context": "https://schema.org",
     "@type": "ProfilePage",
-    "dateModified": "2026-06-04",
+    "dateModified": "2026-09-10",
     "url": "https://bryle-briones.vercel.app/",
     "name": "Bryle Briones — QA Automation Engineer Portfolio",
     "description": "Portfolio of Bryle Briones, QA Automation Engineer with 10+ years of experience in Playwright, Selenium, and Katalon across fintech, telecom, biotech, and e-commerce.",
@@ -391,6 +393,31 @@
     }
     .cert-card:hover .cert-glow { opacity: 1; }
 
+    .copy-summary-btn {
+      transform: scale(1);
+      transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+    }
+    .copy-summary-btn:active { transform: scale(0.97); }
+    .copy-summary-btn.is-copied {
+      background: rgba(52,211,153,0.12) !important;
+      border-color: rgba(52,211,153,0.4) !important;
+      color: #34D399 !important;
+      box-shadow: 0 0 0 3px rgba(52,211,153,0.08);
+    }
+    .copy-summary-toast {
+      transform: translate(-50%, 4px);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+    .copy-summary-toast.is-visible { transform: translate(-50%, 0); }
+
+    #copy-email-card { transition: background 0.3s ease, border-color 0.3s ease, transform 0.15s ease, box-shadow 0.3s ease; }
+    #copy-email-card:active { transform: scale(0.97) !important; }
+    #copy-email-card.is-copied {
+      background: rgba(52,211,153,0.08) !important;
+      border-color: rgba(52,211,153,0.35) !important;
+      box-shadow: 0 0 0 3px rgba(52,211,153,0.08);
+    }
+
     html { scrollbar-color: #3B82F6 #09090B; scrollbar-width: thin; }
     .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
     .scrollbar-none::-webkit-scrollbar { display: none; }
@@ -579,7 +606,7 @@
         <a href="assets/Bryle_Profile.pdf" download
            class="hidden sm:inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium px-4 py-2 rounded-xl cursor-pointer transition-colors duration-200">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
-          Resume
+          Download Resume
         </a>
         <button id="menu-btn" class="md:hidden glass rounded-xl p-2 cursor-pointer" aria-label="Toggle navigation menu">
           <svg class="w-5 h-5 text-zinc-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
@@ -1552,7 +1579,7 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-12">
 
         <button id="copy-email-card" type="button"
-           class="glass-card rounded-2xl p-6 flex flex-col items-center gap-3 cursor-pointer group w-full text-center" aria-label="Copy email address">
+           class="glass-card relative rounded-2xl p-6 flex flex-col items-center gap-3 cursor-pointer group w-full text-center" aria-label="Copy email address">
           <div class="w-12 h-12 rounded-xl bg-blue-600/20 flex items-center justify-center group-hover:bg-blue-600/30 transition-colors duration-200" aria-hidden="true">
             <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
           </div>
@@ -1564,6 +1591,7 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
             </div>
             <div id="copy-email-text" class="text-sm text-white font-medium" style="word-break:break-all;">briones.g.bryle@gmail.com</div>
           </div>
+          <span class="copy-summary-toast pointer-events-none absolute top-2 left-1/2 whitespace-nowrap text-[11px] font-medium text-emerald-400 bg-zinc-900 border border-emerald-500/30 rounded-lg px-2.5 py-1 opacity-0" role="status">Copied!</span>
         </button>
 
         <a href="https://www.linkedin.com/in/bryle-briones-a24974167/" target="_blank" rel="noopener noreferrer"
@@ -1590,19 +1618,28 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
 
       </div>
 
-      <a href="mailto:briones.g.bryle@gmail.com"
-         class="group relative inline-flex items-center gap-3 text-white font-semibold px-9 py-4 rounded-2xl cursor-pointer text-base overflow-hidden transition-all duration-300 hover:-translate-y-0.5"
-         style="background:linear-gradient(135deg,#2563EB 0%,#7C3AED 100%);box-shadow:0 8px 32px rgba(37,99,235,0.35),0 0 0 1px rgba(255,255,255,0.08);">
-        <!-- hover brightening layer -->
-        <span class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-              style="background:linear-gradient(135deg,#3B82F6 0%,#8B5CF6 100%);"></span>
-        <span class="relative z-10 flex items-center gap-3">
-          Send a Message
-          <svg class="w-5 h-5 rotate-90 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
-          </svg>
-        </span>
-      </a>
+      <div class="flex flex-wrap items-center justify-center gap-4">
+        <a href="mailto:briones.g.bryle@gmail.com"
+           class="group relative inline-flex items-center gap-3 text-white font-semibold px-9 py-4 rounded-2xl cursor-pointer text-base overflow-hidden transition-all duration-300 hover:-translate-y-0.5"
+           style="background:linear-gradient(135deg,#2563EB 0%,#7C3AED 100%);box-shadow:0 8px 32px rgba(37,99,235,0.35),0 0 0 1px rgba(255,255,255,0.08);">
+          <!-- hover brightening layer -->
+          <span class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                style="background:linear-gradient(135deg,#3B82F6 0%,#8B5CF6 100%);"></span>
+          <span class="relative z-10 flex items-center gap-3">
+            Send a Message
+            <svg class="w-5 h-5 rotate-90 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+            </svg>
+          </span>
+        </a>
+
+        <button type="button" class="copy-summary-btn relative inline-flex items-center gap-2 glass hover:bg-white/10 text-zinc-300 hover:text-white font-medium px-6 py-4 rounded-2xl cursor-pointer text-sm">
+          <svg class="copy-summary-icon w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          <svg class="copy-summary-check w-4 h-4 flex-shrink-0 text-emerald-400 hidden" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+          <span class="copy-summary-label">Copy Recruiter Summary</span>
+          <span class="copy-summary-toast pointer-events-none absolute bottom-full mb-2 left-1/2 whitespace-nowrap text-[11px] font-medium text-emerald-400 bg-zinc-900 border border-emerald-500/30 rounded-lg px-2.5 py-1 opacity-0" role="status">Copied to clipboard!</span>
+        </button>
+      </div>
     </div>
   </section>
 
@@ -2118,19 +2155,132 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
       var card      = document.getElementById('copy-email-card');
       var copyIcon  = document.getElementById('copy-icon');
       var checkIcon = document.getElementById('check-icon');
+      var toast     = card ? card.querySelector('.copy-summary-toast') : null;
       if (!card || !navigator.clipboard) return;
       var timer = null;
       card.addEventListener('click', function () {
         navigator.clipboard.writeText('briones.g.bryle@gmail.com').then(function () {
           copyIcon.classList.add('hidden');
           checkIcon.classList.remove('hidden');
+          card.classList.add('is-copied');
+          if (toast) { toast.style.opacity = '1'; toast.classList.add('is-visible'); }
           clearTimeout(timer);
           timer = setTimeout(function () {
             copyIcon.classList.remove('hidden');
             checkIcon.classList.add('hidden');
+            card.classList.remove('is-copied');
+            if (toast) { toast.style.opacity = '0'; toast.classList.remove('is-visible'); }
           }, 1800);
         }).catch(function () {
           window.location.href = 'mailto:briones.g.bryle@gmail.com';
+        });
+      });
+    })();
+
+    // ── Copy recruiter summary (Markdown) to clipboard ──────────────────
+    (function () {
+      var buttons = Array.from(document.querySelectorAll('.copy-summary-btn'));
+      if (!buttons.length) return;
+
+      function fallbackCopyToClipboard(text) {
+        var textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
+        var ok = false;
+        try { ok = document.execCommand('copy'); } catch (e) {}
+        document.body.removeChild(textarea);
+        return ok;
+      }
+
+      var SUMMARY_MD = [
+        '# Bryle Briones — QA Automation Engineer & SDET',
+        '',
+        '10+ years of manual and automated testing across fintech, biotech, telecom, e-commerce, and gaming. Builds test frameworks with Playwright, Selenium, and Katalon; comfortable working solo or leading a test automation team. Based in Metro Manila, Philippines — remote-proven across NZ, UK, and US-based teams.',
+        '',
+        '**Email:** briones.g.bryle@gmail.com',
+        '**Phone:** +63 921 526 4183',
+        '**LinkedIn:** https://www.linkedin.com/in/bryle-briones-a24974167/',
+        '**GitHub:** https://github.com/Buraizuuu',
+        '**Portfolio:** https://bryle-briones.vercel.app/',
+        '',
+        '---',
+        '',
+        '## Core Skills',
+        '',
+        '- **Test Automation:** Playwright, Selenium, Katalon Studio, Robot Framework, Cypress, Cucumber (BDD), Allure Report, Maestro, UIlicious',
+        '- **API Testing:** Postman, GraphQL, SoapUI',
+        '- **Languages:** TypeScript, JavaScript, Java, Groovy',
+        '- **CI/CD & Tooling:** Azure DevOps, GitHub Actions, JMeter',
+        '- **Practices:** Agile/Scrum, SAFe, BDD, performance testing, visual regression testing',
+        '',
+        '## Experience',
+        '',
+        '| Dates | Role | Company | Location |',
+        '|---|---|---|---|',
+        '| Jun 2025 – Present | Quality Assurance & Support Analyst | UCG · Universal Communications Group | New Zealand · Remote |',
+        '| Apr 2025 | Contract Senior Software QA Engineer | MMT Digital | London, UK · Remote |',
+        '| Apr 2023 – Apr 2025 | Freelance Senior Software QA Engineer | The Gate London · MBAstack | London, UK · Remote |',
+        '| Oct 2021 – Mar 2023 | Senior Software QA Engineer | Intervenn Biosciences | Manila, PH · South San Francisco, CA |',
+        '| Jan 2019 – Oct 2021 | Senior Software QA Engineer | Accenture | Manila, PH |',
+        '| Apr 2015 – Nov 2018 | Lead Quality Assurance Engineer | Internet Gaming Solutions & Consulting (IGS&C) | Manila, PH · Seoul, KR |',
+        '',
+        '**Highlights:**',
+        '- Automated UI & API test scripts with Playwright integrated into Azure DevOps pipelines (UCG)',
+        '- Led and managed a Test Automation Team for biotech systems (Intervenn Biosciences)',
+        '- Cut manual regression/smoke testing effort by up to 90% across fintech, banking, and telecom (Accenture)',
+        '- Led testing for mobile games contributing to a $1.5B revenue increase in 2018 (IGS&C)',
+        '',
+        '## Certifications',
+        '',
+        '- **Katalon Expert** — https://academy.katalon.com/mcertificate/63ea35172cf9f',
+        '- **Katalon Professional** — https://academy.katalon.com/mcertificate/63d6c263a86a4',
+        '- **Katalon Practitioner** — https://academy.katalon.com/mcertificate/63c9d997f3bd2',
+        '',
+        '## Featured Projects',
+        '',
+        '- **QAlchemy** — Desktop AI QA platform (Tauri, React, TypeScript). Turns a user story into requirements, risks, scenarios, and test cases via one AI call, then keeps testing going with an AI agent, visual regression testing, and a Kanban board. Exports to Excel, Jira, TestRail, Azure DevOps, GitHub, Trello, or PDF. — https://qalchemy.vercel.app/',
+        '- **Lendra** — Desktop loan management app (Next.js, Tauri, SQLite) for private lenders to manage borrowers, loans, repayments, penalties, and investments offline. — https://getlendra.vercel.app/',
+        '- **OTeva** — Desktop practice management app (Next.js, Tauri, SQLite) for occupational therapists — manages patients, clinics, diagnoses, and assessments, and drafts SOAP reports with AI assistance. — https://oteva.vercel.app/',
+        '- **Playwright Framework** — Reference E2E/API automation framework for OrangeHRM and the Restful Booker API: Page Object Model, session reuse via `storageState`, Winston logging, Allure 3 reporting, and Claude Code AI agents for test generation. — https://github.com/Buraizuuu/Playwright-Demo',
+        '- **Playwright Visual Testing** — Pixel-perfect visual regression framework built on Playwright with baseline screenshots, configurable diff thresholds, dynamic content masking, and Winston structured logging. — https://github.com/Buraizuuu/Playwright-Visual-Testing',
+        '',
+        '## Availability',
+        '',
+        'Open to full-time, contract, or freelance QA Automation Engineer / SDET / QA Lead roles — remote-first, NZ/UK/US-friendly hours.'
+      ].join('\n');
+
+      buttons.forEach(function (btn) {
+        var icon  = btn.querySelector('.copy-summary-icon');
+        var check = btn.querySelector('.copy-summary-check');
+        var toast = btn.querySelector('.copy-summary-toast');
+        var timer = null;
+
+        function showCopied() {
+          icon.classList.add('hidden');
+          check.classList.remove('hidden');
+          btn.classList.add('is-copied');
+          if (toast) { toast.style.opacity = '1'; toast.classList.add('is-visible'); }
+          clearTimeout(timer);
+          timer = setTimeout(function () {
+            icon.classList.remove('hidden');
+            check.classList.add('hidden');
+            btn.classList.remove('is-copied');
+            if (toast) { toast.style.opacity = '0'; toast.classList.remove('is-visible'); }
+          }, 1800);
+        }
+
+        btn.addEventListener('click', function () {
+          if (navigator.clipboard) {
+            navigator.clipboard.writeText(SUMMARY_MD).then(showCopied).catch(function () {
+              if (fallbackCopyToClipboard(SUMMARY_MD)) showCopied();
+            });
+          } else if (fallbackCopyToClipboard(SUMMARY_MD)) {
+            showCopied();
+          }
         });
       });
     })();
