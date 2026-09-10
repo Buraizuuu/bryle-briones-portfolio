@@ -397,8 +397,12 @@
     .rec-text.is-clamped { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 6; line-clamp: 6; overflow: hidden; }
 
     /* Projects carousel — native scroll-snap, no JS drag physics needed */
-    #proj-track { scroll-snap-type: x mandatory; scroll-behavior: smooth; }
+    #proj-track { scroll-snap-type: x mandatory; scroll-behavior: smooth; padding: 1.5rem 1rem; }
     .proj-card  { scroll-snap-align: start; }
+    .proj-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px -6px rgba(37,99,235,0.35);
+    }
     @media (prefers-reduced-motion: reduce) { #proj-track { scroll-behavior: auto; } }
 
     /* Recommendations spotlight carousel — transform-based, no scroll-snap */
@@ -1145,7 +1149,7 @@
           <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
         </button>
 
-        <div id="proj-track" class="flex gap-6 overflow-x-auto scrollbar-none pb-2">
+        <div id="proj-track" class="flex gap-6 overflow-x-auto scrollbar-none">
 
         <!-- ── Project 1: QAlchemy ── -->
         <div class="proj-card glass-card rounded-3xl overflow-hidden group flex flex-col flex-shrink-0 w-[86vw] sm:w-[420px]">
