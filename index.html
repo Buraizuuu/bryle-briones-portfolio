@@ -1185,8 +1185,11 @@
             <div class="absolute w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-lime-500/20 blur-2xl"></div>
             <img src="assets/clackwell-icon.png" alt="Clackwell app icon" class="relative w-16 h-16 sm:w-20 sm:h-20 object-contain drop-shadow-lg" width="80" height="80" loading="lazy" />
             <div class="absolute top-4 left-4 glass rounded-xl px-3 py-1.5 flex items-center gap-2">
-              <span class="relative inline-flex rounded-full h-2 w-2 bg-lime-400"></span>
-              <span class="text-xs text-zinc-300 font-medium">Windows</span>
+              <div class="relative flex h-2 w-2">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </div>
+              <span class="text-xs text-zinc-300 font-medium">Live</span>
             </div>
           </div>
 
@@ -1213,10 +1216,11 @@
             </div>
 
             <div class="pt-4 border-t border-white/5 flex items-center gap-4 mt-auto">
-              <span class="flex items-center gap-1.5 text-sm text-zinc-500">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25"/></svg>
-                Portable Windows app
-              </span>
+              <a href="https://clackwell.vercel.app/" target="_blank" rel="noopener noreferrer"
+                 class="flex items-center gap-1.5 text-sm text-zinc-400 hover:text-white transition-colors duration-200 cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+                Website
+              </a>
             </div>
           </div>
         </div>
@@ -2332,7 +2336,7 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
         '',
         '## Featured Projects',
         '',
-        '- **Clackwell** — Windows keyboard-sound app (Tauri 2, Rust, Web Audio). Plays 17 mechanical switch sounds system-wide through a low-level keyboard hook, with a live keyboard, pressable switch previews, tray mode, and a 3.5 MB portable executable. Everything stays on-device.',
+        '- **Clackwell** — Windows keyboard-sound app (Tauri 2, Rust, Web Audio). Plays 17 mechanical switch sounds system-wide through a low-level keyboard hook, with a live keyboard, pressable switch previews, tray mode, and a 3.5 MB portable executable. Everything stays on-device. — https://clackwell.vercel.app/',
         '- **QAlchemy** — Desktop AI QA platform (Tauri, React, TypeScript). Turns a user story into requirements, risks, scenarios, and test cases via one AI call, then keeps testing going with an AI agent, visual regression testing, and a Kanban board. Exports to Excel, Jira, TestRail, Azure DevOps, GitHub, Trello, or PDF. — https://qalchemy.vercel.app/',
         '- **Lendra** — Desktop loan management app (Next.js, Tauri, SQLite) for private lenders to manage borrowers, loans, repayments, penalties, and investments offline. — https://getlendra.vercel.app/',
         '- **OTeva** — Desktop practice management app (Next.js, Tauri, SQLite) for occupational therapists — manages patients, clinics, diagnoses, and assessments, and drafts SOAP reports with AI assistance. — https://oteva.vercel.app/',
