@@ -1178,6 +1178,49 @@
 
         <div id="proj-track" class="flex gap-6 overflow-x-auto scrollbar-none">
 
+        <!-- ── Project 0: Clackwell ── -->
+        <div class="proj-card glass-card rounded-3xl overflow-hidden group flex flex-col flex-shrink-0 w-[86vw] sm:w-[420px]">
+          <div class="relative h-32 sm:h-40 bg-zinc-950 overflow-hidden flex-shrink-0 flex items-center justify-center"
+               style="background-image:linear-gradient(rgba(255,255,255,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.06) 1px,transparent 1px);background-size:24px 24px;">
+            <div class="absolute w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-lime-500/20 blur-2xl"></div>
+            <img src="assets/clackwell-icon.png" alt="Clackwell app icon" class="relative w-16 h-16 sm:w-20 sm:h-20 object-contain drop-shadow-lg" width="80" height="80" loading="lazy" />
+            <div class="absolute top-4 left-4 glass rounded-xl px-3 py-1.5 flex items-center gap-2">
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-lime-400"></span>
+              <span class="text-xs text-zinc-300 font-medium">Windows</span>
+            </div>
+          </div>
+
+          <div class="p-5 sm:p-7 flex flex-col flex-1">
+            <div class="mb-3">
+              <div class="flex items-center justify-between gap-3 mb-1">
+                <h3 class="font-heading text-base sm:text-lg font-semibold text-white min-w-0 leading-snug">Clackwell</h3>
+                <span class="text-xs bg-lime-500/10 border border-lime-500/20 text-lime-400 px-2.5 py-1 rounded-lg font-medium flex-shrink-0">Rust</span>
+              </div>
+              <p class="text-zinc-600 text-xs">Keyboard sounds · Desktop app · 3.5 MB</p>
+            </div>
+
+            <p class="text-zinc-400 text-sm leading-relaxed mb-4">
+              A small Windows app that plays mechanical keyboard sounds as you type in any app. Pick from 17 switch sounds, press a switch to hear it, and watch a live keyboard light up. It runs from the tray and keeps everything on your computer.
+            </p>
+
+            <div class="flex flex-wrap gap-1.5 mb-5">
+              <span class="skill-pill text-xs px-2.5 py-0.5 rounded-full">Tauri 2</span>
+              <span class="skill-pill text-xs px-2.5 py-0.5 rounded-full">Rust</span>
+              <span class="skill-pill text-xs px-2.5 py-0.5 rounded-full">JavaScript</span>
+              <span class="skill-pill text-xs px-2.5 py-0.5 rounded-full">Web Audio</span>
+              <span class="skill-pill text-xs px-2.5 py-0.5 rounded-full">Win32 Hooks</span>
+              <span class="skill-pill text-xs px-2.5 py-0.5 rounded-full">Playwright</span>
+            </div>
+
+            <div class="pt-4 border-t border-white/5 flex items-center gap-4 mt-auto">
+              <span class="flex items-center gap-1.5 text-sm text-zinc-500">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25"/></svg>
+                Portable Windows app
+              </span>
+            </div>
+          </div>
+        </div>
+
         <!-- ── Project 1: QAlchemy ── -->
         <div class="proj-card glass-card rounded-3xl overflow-hidden group flex flex-col flex-shrink-0 w-[86vw] sm:w-[420px]">
           <div class="relative h-32 sm:h-40 bg-zinc-950 overflow-hidden flex-shrink-0 flex items-center justify-center"
@@ -2289,6 +2332,7 @@ test('login — valid credentials', async (&#123; page &#125;) =&gt; &#123;
         '',
         '## Featured Projects',
         '',
+        '- **Clackwell** — Windows keyboard-sound app (Tauri 2, Rust, Web Audio). Plays 17 mechanical switch sounds system-wide through a low-level keyboard hook, with a live keyboard, pressable switch previews, tray mode, and a 3.5 MB portable executable. Everything stays on-device.',
         '- **QAlchemy** — Desktop AI QA platform (Tauri, React, TypeScript). Turns a user story into requirements, risks, scenarios, and test cases via one AI call, then keeps testing going with an AI agent, visual regression testing, and a Kanban board. Exports to Excel, Jira, TestRail, Azure DevOps, GitHub, Trello, or PDF. — https://qalchemy.vercel.app/',
         '- **Lendra** — Desktop loan management app (Next.js, Tauri, SQLite) for private lenders to manage borrowers, loans, repayments, penalties, and investments offline. — https://getlendra.vercel.app/',
         '- **OTeva** — Desktop practice management app (Next.js, Tauri, SQLite) for occupational therapists — manages patients, clinics, diagnoses, and assessments, and drafts SOAP reports with AI assistance. — https://oteva.vercel.app/',
