@@ -16,7 +16,7 @@ A single-page portfolio for a QA Automation Engineer targeting Senior QA / SDET 
 - **Certifications** — 3 Katalon badges (Practitioner, Professional, Expert)
 - **Projects** — PriceLOCQ, ReizTech, Playwright AI QA Framework, Maestro Mobile Automation
 - **Recommendations** — spotlight carousel with colleague testimonials; initials avatars, read-more toggle, touch/click navigation
-- **Contact** — click-to-copy email, LinkedIn, GitHub, phone
+- **Contact** — click-to-copy email, LinkedIn, GitHub
 
 ---
 

@@ -3,7 +3,6 @@
 10+ years of manual and automated testing across fintech, biotech, telecom, e-commerce, and gaming. Builds test frameworks with Playwright, Selenium, and Katalon; comfortable working solo or leading a test automation team. Based in Metro Manila, Philippines — remote-proven across NZ, UK, and US-based teams.
 
 **Email:** briones.g.bryle@gmail.com
-**Phone:** +63 921 526 4183
 **LinkedIn:** https://www.linkedin.com/in/bryle-briones-a24974167/
 **GitHub:** https://github.com/Buraizuuu
 **Portfolio:** https://bryle-briones.vercel.app/
